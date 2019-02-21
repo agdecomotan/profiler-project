@@ -1,0 +1,19 @@
+<app-page [headerPanel]="headerPanel" [contentPanel]="contentPanel" [headerText]="'Student List'"></app-page>
+<ng-template #headerPanel>
+    <button type="button" class="btn btn-secondary" routerLink="/student-entry">Add</button>
+</ng-template>
+
+<ng-template #contentPanel>
+    <ngx-datatable
+            class="bootstrap"
+            [rows]="rows | async"
+            [loadingIndicator]="loadingIndicator"
+            [columns]="columns"
+            [columnMode]="'force'"
+            [limit]="10"
+            [rowHeight]="'auto'"
+            [headerHeight]="40"
+            [footerHeight]="40"
+            [reorderable]="reorderable">
+    </ngx-datatable>
+</ng-template>

@@ -1,0 +1,30 @@
+<app-page [headerPanel]="headerPanel" [contentPanel]="contentPanel" [headerText]="'Student Entry'"></app-page>
+<ng-template #headerPanel>
+    <button type="button" class="btn btn-secondary">Save</button>
+    <button type="button" class="btn btn-secondary">Cancel</button>
+</ng-template>
+
+<ng-template #contentPanel>
+    <div class="content-panel">
+        <div class="items-panel">
+            <div *ngFor="let item of model">
+                <label>{{item.name}}</label>
+                <input type="text" class="form-control" [(ngModel)]="item.value" placeholder="{{item.name}}">
+            </div>
+        </div>
+        <div class="items-panel">
+            <ngx-datatable
+                    class="bootstrap"
+                    [rows]="rows | async"
+                    [loadingIndicator]="loadingIndicator"
+                    [columns]="columns"
+                    [columnMode]="'force'"
+                    [limit]="5"
+                    [rowHeight]="'auto'"
+                    [headerHeight]="40"
+                    [footerHeight]="40"
+                    [reorderable]="reorderable">
+            </ngx-datatable>
+        </div>
+    </div>
+</ng-template>

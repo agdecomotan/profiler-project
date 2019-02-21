@@ -1,0 +1,9 @@
+<div class="container">
+    <div class="header-panel">
+        <h3>{{headerText}}</h3>
+        <div class="header-control">
+            <ng-container [ngTemplateOutlet]="headerPanel"></ng-container>
+        </div>
+    </div>
+    <ng-container [ngTemplateOutlet]="contentPanel"></ng-container>
+</div>
