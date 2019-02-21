@@ -1,6 +1,8 @@
+@import "../../app.component";
+
 :host{
   height: 20px;
-  background: #305b90;
+  background: $x-default-color;
   display: flex;
   position: fixed;
   width: 100%;

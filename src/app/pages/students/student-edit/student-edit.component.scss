@@ -1,14 +1,21 @@
 .items-panel{
   padding-top: 20px;
   padding-right: 20px;
-  width: 30%;
+  width: 40%;
+  min-width: 450px;
 }
 
 .content-panel{
   display: flex;
 }
 
-label{
+label {
   padding-top: 10px;
 }
+
+.btn-block {
+  margin-top: 10px;
+}
+
+
 

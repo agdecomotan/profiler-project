@@ -17,6 +17,11 @@ export class StudentEditComponent {
         {id: 'program', name: 'Program', value: ''}
     ];
 
+    gradeModel = [
+        {id: 'courseId', name: 'Course', value: ''},
+        {id: 'value', name: 'Grade', value: ''}
+    ];
+
     columns = [
         {prop: 'title', name: 'Product Name'},
         {prop: 'category', name: 'Category'}
@@ -24,6 +29,7 @@ export class StudentEditComponent {
     rows: Observable<any>;
     loadingIndicator = true;
     reorderable = true;
+    pageTitle = 'Student Entry';
 
     constructor(private db: BaseService) {
         this.loadList();

@@ -1,5 +1,7 @@
+@import "../../app.component";
+
 .navbar{
-  background: #336699;
+  background: $x-default-color;
 }
 
 .navbar .navbar-brand,

@@ -1,0 +1,61 @@
+<app-page [headerPanel]="headerPanel" [contentPanel]="contentPanel" [headerText]="'Course Track'"></app-page>
+<ng-template #headerPanel>
+    <select class="form-control">
+        <option value="" disabled selected>Year Admitted to Track</option>
+        <option value="2018">2018</option>
+        <option value="2019">2019</option>
+    </select>
+</ng-template>
+
+<ng-template #contentPanel>
+    <ngb-tabset [justify]="'left'">
+        <ngb-tab title="Software Development">
+            <ng-template ngbTabContent >
+                <ngx-datatable
+                        class="bootstrap"
+                        [rows]="rows | async"
+                        [loadingIndicator]="loadingIndicator"
+                        [columns]="columns"
+                        [columnMode]="'force'"
+                        [limit]="8"
+                        [rowHeight]="'auto'"
+                        [headerHeight]="40"
+                        [footerHeight]="40"
+                        [reorderable]="reorderable">
+                </ngx-datatable>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Distributed Systems">
+            <ng-template ngbTabContent >
+                <ngx-datatable
+                        class="bootstrap"
+                        [rows]="rows | async"
+                        [loadingIndicator]="loadingIndicator"
+                        [columns]="columns"
+                        [columnMode]="'force'"
+                        [limit]="8"
+                        [rowHeight]="'auto'"
+                        [headerHeight]="40"
+                        [footerHeight]="40"
+                        [reorderable]="reorderable">
+                </ngx-datatable>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Multimedia Studies">
+            <ng-template ngbTabContent >
+                <ngx-datatable
+                        class="bootstrap"
+                        [rows]="rows | async"
+                        [loadingIndicator]="loadingIndicator"
+                        [columns]="columns"
+                        [columnMode]="'force'"
+                        [limit]="8"
+                        [rowHeight]="'auto'"
+                        [headerHeight]="40"
+                        [footerHeight]="40"
+                        [reorderable]="reorderable">
+                </ngx-datatable>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</ng-template>

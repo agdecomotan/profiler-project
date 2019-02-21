@@ -24,7 +24,8 @@
           "assets/css/nucleo-icons.css",
           "assets/css/ngx.scss",
           "assets/css/demo.css",
-          "styles.scss"
+          "styles.scss",
+          "../node_modules/nvd3/build/nv.d3.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.slim.min.js",
