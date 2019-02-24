@@ -1,0 +1,59 @@
+<app-page [headerPanel]="headerPanel" [contentPanel]="contentPanel" [headerText]="'Profiles'"></app-page>
+<ng-template #headerPanel>
+    <button type="button" class="btn btn-secondary" routerLink="/profile-entry">Add</button>
+    <button type="button" class="btn btn-secondary">Profile</button>
+    <button type="button" class="btn btn-secondary">Email Result</button>
+</ng-template>
+
+<ng-template #contentPanel>
+    <ngb-tabset [justify]="'left'">
+        <ngb-tab title="All">
+            <ng-template ngbTabContent >
+                <ngx-datatable
+                        class="bootstrap"
+                        [rows]="rows | async"
+                        [loadingIndicator]="loadingIndicator"
+                        [columns]="columns"
+                        [columnMode]="'force'"
+                        [limit]="8"
+                        [rowHeight]="'auto'"
+                        [headerHeight]="40"
+                        [footerHeight]="40"
+                        [reorderable]="reorderable">
+                </ngx-datatable>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Stage 1">
+            <ng-template ngbTabContent >
+                <ngx-datatable
+                        class="bootstrap"
+                        [rows]="rows | async"
+                        [loadingIndicator]="loadingIndicator"
+                        [columns]="columns"
+                        [columnMode]="'force'"
+                        [limit]="8"
+                        [rowHeight]="'auto'"
+                        [headerHeight]="40"
+                        [footerHeight]="40"
+                        [reorderable]="reorderable">
+                </ngx-datatable>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Stage 2">
+            <ng-template ngbTabContent >
+                <ngx-datatable
+                        class="bootstrap"
+                        [rows]="rows | async"
+                        [loadingIndicator]="loadingIndicator"
+                        [columns]="columns"
+                        [columnMode]="'force'"
+                        [limit]="8"
+                        [rowHeight]="'auto'"
+                        [headerHeight]="40"
+                        [footerHeight]="40"
+                        [reorderable]="reorderable">
+                </ngx-datatable>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</ng-template>

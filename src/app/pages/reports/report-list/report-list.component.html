@@ -1,3 +1,10 @@
-<div>
-    <nvd3 [options]="options" [data]="data"></nvd3>
-</div>
+<app-page [contentPanel]="contentPanel"></app-page>
+
+<ng-template #contentPanel>
+    <div class="widget-container">
+        <div class="item"><nvd3 [options]="options" [data]="data"></nvd3></div>
+        <div class="item"><nvd3 [options]="options" [data]="data"></nvd3></div>
+        <div class="item"><nvd3 [options]="options" [data]="data"></nvd3></div>
+        <div class="item"><nvd3 [options]="options" [data]="data"></nvd3></div>
+    </div>
+</ng-template>

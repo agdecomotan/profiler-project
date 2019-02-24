@@ -3,12 +3,12 @@ import {Observable} from 'rxjs/Observable';
 import {BaseService} from '../../../data/service/base-service';
 
 @Component({
-    selector: 'app-course-list',
-    templateUrl: './course-track-list.component.html',
-    styleUrls: ['./course-track-list.component.scss']
+    selector: 'app-profile-list',
+    templateUrl: './profile-list.component.html',
+    styleUrls: ['./profile-list.component.scss']
 })
 
-export class CourseTrackListComponent {
+export class ProfileListComponent {
     columns = [
         {prop: 'title', name: 'Product Name'},
         {prop: 'description', name: 'Description'},

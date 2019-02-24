@@ -17,3 +17,17 @@ app-root {
   text-align: center;
   background: #bdbdbd;
 }
+
+.items-panel{
+  padding-right: 20px;
+  width: 40%;
+  min-width: 450px;
+}
+
+.content-panel{
+  display: flex;
+}
+
+.btn-block {
+  margin-top: 10px;
+}

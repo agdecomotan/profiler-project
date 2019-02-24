@@ -26,6 +26,11 @@ import {StudentListComponent} from './pages/students/student-list/student-list.c
 import {StudentEditComponent} from './pages/students/student-edit/student-edit.component';
 import {CourseTrackListComponent} from './pages/course-tracks/course-track-list/course-track-list.component';
 import {ReportListComponent} from './pages/reports/report-list/report-list.component';
+import {ProfileDetailComponent} from './pages/profile/profile-detail/profile-detail.component';
+import {ProfileEntryComponent} from './pages/profile/profile-entry/profile-entry.component';
+import {ProfileListComponent} from './pages/profile/profile-list/profile-list.component';
+import {ProfileUpdateComponent} from './pages/profile/profile-update/profile-update.component';
+import {AdministrationComponent} from './pages/administration/administration.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +42,12 @@ import {ReportListComponent} from './pages/reports/report-list/report-list.compo
       StudentListComponent,
       StudentEditComponent,
       CourseTrackListComponent,
-      ReportListComponent
+      ReportListComponent,
+      ProfileDetailComponent,
+      ProfileEntryComponent,
+      ProfileListComponent,
+      ProfileUpdateComponent,
+      AdministrationComponent
   ],
   imports: [
       BrowserModule,
