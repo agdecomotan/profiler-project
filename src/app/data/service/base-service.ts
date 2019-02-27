@@ -6,19 +6,38 @@ import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class BaseService {
-    apiURL = 'https://callousphotography.000webhostapp.com/api/';
+    apiURL = 'https://imjustpureblood.ml/profiler-api/';
 
     constructor(private http: HttpClient, private router: Router) {}
 
-    // Product
-    getProducts(value?): Observable<any> {
-        const url = this.apiURL + 'api/product/get.php';
+    // Student
+    getStudents(value?): Observable<any> {
+        const url = this.apiURL + 'student/get.php';
         if (value) {
             const params = new HttpParams()
-                .set('category', value);
+                .set('id', value);
             return this.http.get<any>(url, {params});
         } else {
             return this.http.get<any>(url);
         }
+    }
+
+    updateStudent(value) {
+        const url = this.apiURL + 'student/update.php';
+        return this.http.post(url, value);
+    }
+
+    addStudent(value) {
+        const url = this.apiURL + 'student/add.php';
+        return this.http.post(url, value);
+    }
+
+    deleteProduct(value) {
+        const url = this.apiURL + 'api/product/delete.php';
+        return this.http.post(url, value);
+    }
+
+    getProducts(value?): Observable<any> {
+        return null;
     }
 }

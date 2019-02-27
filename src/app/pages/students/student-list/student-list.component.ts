@@ -11,9 +11,9 @@ import {Student} from '../../../data/model';
 
 export class StudentListComponent {
     columns = [
-        {prop: 'title', name: 'Product Name'},
-        {prop: 'description', name: 'Description'},
-        {prop: 'category', name: 'Category'}
+        {prop: 'studentNumber', name: 'Product Name'},
+        {prop: 'firstName', name: 'Description'},
+        {prop: 'lastName', name: 'Category'}
     ];
     rows: Observable<any>;
     loadingIndicator = true;
@@ -24,6 +24,6 @@ export class StudentListComponent {
     }
 
     loadList() {
-        this.rows = this.db.getProducts();
+        this.rows = this.db.getStudents();
     }
 }

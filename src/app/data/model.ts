@@ -1,10 +1,12 @@
 export class Student {
     id: number;
-    number: string;
+    studentNumber: string;
     firstName: string;
     lastName: string;
     yearLevel: string;
     program: string;
+    email: string;
+    datecreated: string;
     grades: Grade[]
 }
 
@@ -21,3 +23,7 @@ export class Grade {
     studentId: number;
     value: string;
 }
+
+
+
+
