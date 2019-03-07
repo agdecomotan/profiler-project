@@ -1,11 +1,17 @@
 import 'rxjs/add/operator/map';
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class BaseService {
+    jsonOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json'
+        })
+    };
+
     apiURL = 'https://imjustpureblood.ml/profiler-api/';
 
     constructor(private http: HttpClient, private router: Router) {}
@@ -29,7 +35,7 @@ export class BaseService {
 
     addStudent(value) {
         const url = this.apiURL + 'student/add.php';
-        return this.http.post(url, value);
+        return this.http.post(url, value, this.jsonOptions);
     }
 
     deleteProduct(value) {

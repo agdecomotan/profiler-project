@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {RouterModule} from '@angular/router';
 import {AppRoutingModule} from './app.routing';
@@ -18,6 +18,7 @@ import {XPageComponent} from './framework/page/x-page.component';
 
 // DB
 import {BaseService} from './data/service/base-service';
+import {StudentApi} from './data/api/student.api';
 
 // Pages
 import {AppComponent} from './app.component';
@@ -31,6 +32,8 @@ import {ProfileEntryComponent} from './pages/profile/profile-entry/profile-entry
 import {ProfileListComponent} from './pages/profile/profile-list/profile-list.component';
 import {ProfileUpdateComponent} from './pages/profile/profile-update/profile-update.component';
 import {AdministrationComponent} from './pages/administration/administration.component';
+import {UserApi} from './data/api/user.api';
+import {CourseApi} from './data/api/course.api';
 
 @NgModule({
   declarations: [
@@ -54,12 +57,18 @@ import {AdministrationComponent} from './pages/administration/administration.com
       HttpClientModule ,
       NgbModule.forRoot(),
       FormsModule,
+      ReactiveFormsModule,
       NgxDatatableModule,
       NvD3Module,
       RouterModule,
       AppRoutingModule
   ],
-  providers: [BaseService],
+  providers: [
+      BaseService,
+      StudentApi,
+      UserApi,
+      CourseApi
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

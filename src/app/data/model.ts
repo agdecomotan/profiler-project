@@ -6,15 +6,17 @@ export class Student {
     yearLevel: string;
     program: string;
     email: string;
-    datecreated: string;
+    dateCreated: string;
     grades: Grade[]
 }
 
 export class Course {
     id: number;
-    number: string;
+    courseNumber: string;
     title: string;
     specialization: string;
+    credit: string;
+    active: boolean;
 }
 
 export class Grade {
@@ -22,8 +24,35 @@ export class Grade {
     courseId: number;
     studentId: number;
     value: string;
+    term: string;
+    year: string;
 }
 
+export class User {
+    id: number;
+    firstName: string;
+    lastName: string;
+    position: string;
+    email: string;
+    username: string;
+    password: string;
+}
+
+export class Profile {
+    id: number;
+    dateCreated: string;
+    stageOneDate: string;
+    stageTwoDate: string;
+    stageOneResult: string;
+    stageTwoResult: string;
+    finalResult: string;
+    status: string;
+    studentId: string;
+    userId: string;
+}
+
+export class Configuration {
+}
 
 
 

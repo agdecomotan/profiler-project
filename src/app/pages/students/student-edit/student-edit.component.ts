@@ -1,6 +1,10 @@
 import {Component} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {BaseService} from '../../../data/service/base-service';
+import {StudentApi} from '../../../data/api/student.api';
+import {Grade, Student} from '../../../data/model';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {XPageEditComponent} from '../../../framework/page/x-page-edit.component';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
     selector: 'app-student-edit',
@@ -8,58 +12,86 @@ import {BaseService} from '../../../data/service/base-service';
     styleUrls: ['./student-edit.component.scss']
 })
 
-export class StudentEditComponent {
-    model = [
-        {id: 'studentNumber', name: 'Student Number', value: ''},
-        {id: 'firstName', name: 'First Name', value: ''},
-        {id: 'lastName', name: 'Last Name', value: ''},
-        {id: 'yearLevel', name: 'Year Level', value: ''},
-        {id: 'email', name: 'E-mail', value: ''},
-        {id: 'program', name: 'Program', value: ''}
-    ];
-
-    gradeModel = [
-        {id: 'courseId', name: 'Course', value: ''},
-        {id: 'value', name: 'Grade', value: ''}
-    ];
-
+export class StudentEditComponent extends XPageEditComponent {
     columns = [
-        {prop: 'title', name: 'Product Name'},
-        {prop: 'category', name: 'Category'}
+        {prop: 'title', name: 'Course'},
+        {prop: 'category', name: 'Grade'}
     ];
+
+    model: Student;
+    gradeModel: Grade;
     rows: Observable<any>;
-    loadingIndicator = true;
-    reorderable = true;
-    pageTitle = 'Student Entry';
 
-    constructor(private db: BaseService) {
-        this.loadList();
-    }
-
-    loadList() {
-        this.rows = this.db.getProducts();
+    constructor(private db: StudentApi,
+                public activatedRoute: ActivatedRoute,
+                public modalService: NgbModal,
+                private router: Router) {
+        super(modalService, activatedRoute, 'Student');
+        this.gradeModel = new Grade();
+        this.model = new Student();
+        this.model.grades = new Array();
+        if (this.editMode) {
+            this.db.getStudent(this.editId).subscribe(
+                data => {
+                    this.model = data;
+                    return true;
+                },
+                error => {
+                    this.showError();
+                    this.router.navigate(['/students']);
+                    return Observable.throw(error);
+                }
+            );
+        }
     }
 
     save() {
-
-        const value = {
-            'studentNumber': '2017-30211',
-            'firstName': 'Jane',
-            'lastName': 'Cruz',
-            'yearLevel': '1',
-            'program': 'MIS',
-            'email': 'a@y.com'
-        };
-        // this.model.forEach(x => value[x.id] = x.value);
-
-        this.db.addStudent(value).subscribe(
-            data => {
-                this.loadList();
-                return true;
-            },
-            error => {
-                return Observable.throw(error);
+        if (this.validateInput()) {
+            if (this.editMode) {
+                this.db.updateStudent(this.model).subscribe(
+                    data => {
+                        this.showSuccess();
+                        this.router.navigate(['/students']);
+                        return true;
+                    },
+                    error => {
+                        this.showError();
+                        return Observable.throw(error);
+                    }
+                );
+            } else {
+                this.db.addStudent(this.model).subscribe(
+                    data => {
+                        this.showSuccess();
+                        this.router.navigate(['/students']);
+                        return true;
+                    },
+                    error => {
+                        this.showError();
+                        return Observable.throw(error);
+                    }
+                );
             }
-        );
+        } else {
+            this. showValidationError();
+        }
+    }
+
+    validateInput(): boolean {
+        if (this.model.studentNumber === undefined || this.model.studentNumber === '') {
+            return false;
+        } if (this.model.firstName === undefined || this.model.firstName === '') {
+            return false;
+        } if (this.model.lastName === undefined || this.model.lastName === '') {
+            return false;
+        } if (this.model.yearLevel === undefined || this.model.yearLevel === '') {
+            return false;
+        } if (this.model.program === undefined || this.model.program === '') {
+            return false;
+        } if (this.model.email === undefined || this.model.email === '') {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

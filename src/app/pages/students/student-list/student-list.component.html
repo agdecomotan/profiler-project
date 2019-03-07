@@ -12,8 +12,36 @@
             [columnMode]="'force'"
             [limit]="10"
             [rowHeight]="'auto'"
-            [headerHeight]="40"
+            [headerHeight]="35"
             [footerHeight]="40"
             [reorderable]="reorderable">
     </ngx-datatable>
+</ng-template>
+
+<ng-template #actionsTemplate class="row-actions" let-row="row" let-value="value">
+    <button md-icon-button (click)="edit(row.id)">
+        <i class="fa fa-edit"></i>
+    </button>
+    <button md-icon-button (click)="confirmDelete(row, dialog)">
+        <i class="fa fa-trash"></i>
+    </button>
+</ng-template>
+
+<ng-template #dialog let-c="close" let-d="dismiss">
+    <div class="modal-body">
+        <p>Are you sure you want to delete selected data?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="delete()">Confirm</button>
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cancel</button>
+    </div>
+</ng-template>
+
+<ng-template #alertTemplate let-c="close" let-d="dismiss">
+    <div class="modal-body">
+        <p>{{alertMessage}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">OK</button>
+    </div>
 </ng-template>

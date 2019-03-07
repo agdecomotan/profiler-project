@@ -10,9 +10,36 @@
             <ng-template ngbTabContent >
                 <div class="content-panel">
                     <div class="items-panel">
-                        <div *ngFor="let item of model">
-                            <label>{{item.name}}</label>
-                            <input type="text" class="form-control" [(ngModel)]="item.value" placeholder="{{item.name}}">
+                        <!--<div *ngIf="name.invalid && (name.dirty || name.touched)"-->
+                             <!--class="alert alert-danger">-->
+                            <!--<div *ngIf="name.errors.required">-->
+                                <!--Name is required.-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div>
+                            <label>Student Number</label>
+                            <input type="text" class="form-control" [(ngModel)]="model.studentNumber" required
+                                  #name="ngModel">
+                        </div>
+                        <div>
+                            <label>First Name</label>
+                            <input type="text" class="form-control" [(ngModel)]="model.firstName">
+                        </div>
+                        <div>
+                            <label>Last Name</label>
+                            <input type="text" class="form-control" [(ngModel)]="model.lastName">
+                        </div>
+                        <div>
+                            <label>Year Level</label>
+                            <input type="text" class="form-control" [(ngModel)]="model.yearLevel">
+                        </div>
+                        <div>
+                            <label>Program</label>
+                            <input type="text" class="form-control" [(ngModel)]="model.program">
+                        </div>
+                        <div>
+                            <label>Email</label>
+                            <input type="email" class="form-control" [(ngModel)]="model.email">
                         </div>
                     </div>
                 </div>
@@ -22,8 +49,8 @@
             <ng-template ngbTabContent>
                 <div class="content-panel">
                     <div class="items-panel">
-                        <label>{{gradeModel[1].name}}</label>
-                        <select class="form-control" [(ngModel)]="gradeModel[1].value">
+                        <label>Course</label>
+                        <select class="form-control" [(ngModel)]="gradeModel.courseId">
                             <option>Event</option>
                             <option>Food</option>
                             <option>Product</option>
@@ -32,8 +59,8 @@
                             <option>Graphics</option>
                         </select>
 
-                        <label>{{gradeModel[0].name}}</label>
-                        <input type="text" class="form-control" [(ngModel)]="gradeModel[0].value" placeholder="{{gradeModel[0].name}}">
+                        <label>Grade</label>
+                        <input type="text" class="form-control" [(ngModel)]="gradeModel.value">
 
                         <button type="button" class="btn btn-secondary btn-block">Add</button>
                     </div>
@@ -55,4 +82,13 @@
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
+</ng-template>
+
+<ng-template #alertTemplate let-c="close" let-d="dismiss">
+    <div class="modal-body">
+        <p>{{alertMessage}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">OK</button>
+    </div>
 </ng-template>

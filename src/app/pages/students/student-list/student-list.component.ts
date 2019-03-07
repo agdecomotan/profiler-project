@@ -1,7 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {BaseService} from '../../../data/service/base-service';
+import {StudentApi} from '../../../data/api/student.api';
+import {ActivatedRoute, Router} from '@angular/router';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Student} from '../../../data/model';
+import {XPageEditComponent} from '../../../framework/page/x-page-edit.component';
 
 @Component({
     selector: 'app-student-list',
@@ -9,21 +12,53 @@ import {Student} from '../../../data/model';
     styleUrls: ['./student-list.component.scss']
 })
 
-export class StudentListComponent {
-    columns = [
-        {prop: 'studentNumber', name: 'Product Name'},
-        {prop: 'firstName', name: 'Description'},
-        {prop: 'lastName', name: 'Category'}
+export class StudentListComponent extends XPageEditComponent implements OnInit {
+    rowValue = [
+        {studentNumber: 'studentNumber', firstName: 'firstName', lastName: 'lastName', id: 2}
     ];
+
     rows: Observable<any>;
+    columns = [];
     loadingIndicator = true;
     reorderable = true;
 
-    constructor(private db: BaseService) {
+    constructor(private db: StudentApi,
+                public activatedRoute: ActivatedRoute,
+                public modalService: NgbModal,
+                private router: Router) {
+        super(modalService, activatedRoute, 'Student');
         this.loadList();
+    }
+
+    ngOnInit() {
+        this.columns = [
+            {prop: 'studentNumber', name: 'Student Number'},
+            {prop: 'firstName', name: 'First Name'},
+            {prop: 'lastName', name: 'Last Name'},
+            {prop: 'id', name: 'Actions', cellTemplate: this.actionsTemplate}
+        ];
     }
 
     loadList() {
         this.rows = this.db.getStudents();
+    }
+
+    edit(value) {
+        this.router.navigate(['/student-entry'], {queryParams: {id: value}});
+    }
+
+    delete() {
+        this.confirmModal.close();
+        this.db.deleteStudent(this.currentModel).subscribe(
+            data => {
+                this.showDeleted();
+                this.loadList();
+                return true;
+            },
+            error => {
+                this.showError();
+                return Observable.throw(error);
+            }
+        );
     }
 }

@@ -1,10 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-
 import { environment } from '../../../environments/environment';
 
 export class RestApi {
-
   public static API_URL = environment.apiUrl;
 
   constructor(private http: HttpClient) {

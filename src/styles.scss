@@ -1,5 +1,6 @@
 body {
   overflow-x: hidden;
+  overflow-y: hidden;
   min-height: 100%;
   display: flex;
   margin: 0;
@@ -30,4 +31,8 @@ app-root {
 
 .btn-block {
   margin-top: 10px;
+}
+
+.btn {
+  margin: 0 5px;
 }
