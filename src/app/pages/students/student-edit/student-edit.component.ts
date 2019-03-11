@@ -5,6 +5,8 @@ import {Grade, Student} from '../../../data/model';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {XPageEditComponent} from '../../../framework/page/x-page-edit.component';
 import {ActivatedRoute, Router} from '@angular/router';
+import {CourseApi} from '../../../data/api/course.api';
+import {GradeApi} from '../../../data/api/grade.api';
 
 @Component({
     selector: 'app-student-edit',
@@ -15,14 +17,18 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class StudentEditComponent extends XPageEditComponent {
     columns = [
         {prop: 'title', name: 'Course'},
-        {prop: 'category', name: 'Grade'}
+        {prop: 'value', name: 'Grade'}
     ];
 
     model: Student;
     gradeModel: Grade;
     rows: Observable<any>;
+    courseList = [];
+    gradeList = [];
 
     constructor(private db: StudentApi,
+                private dbCourse: CourseApi,
+                private dbGrade: GradeApi,
                 public activatedRoute: ActivatedRoute,
                 public modalService: NgbModal,
                 private router: Router) {
@@ -42,7 +48,10 @@ export class StudentEditComponent extends XPageEditComponent {
                     return Observable.throw(error);
                 }
             );
+
+           this.loadGradeList();
         }
+        this.loadCourseList();
     }
 
     save() {
@@ -50,9 +59,13 @@ export class StudentEditComponent extends XPageEditComponent {
             if (this.editMode) {
                 this.db.updateStudent(this.model).subscribe(
                     data => {
-                        this.showSuccess();
-                        this.router.navigate(['/students']);
-                        return true;
+                        this.model = data;
+                        if (this.gradeList.length > 0) {
+                            this.saveGrade();
+                        } else {
+                            this.showSuccess();
+                            this.router.navigate(['/students']);
+                        }
                     },
                     error => {
                         this.showError();
@@ -62,9 +75,13 @@ export class StudentEditComponent extends XPageEditComponent {
             } else {
                 this.db.addStudent(this.model).subscribe(
                     data => {
-                        this.showSuccess();
-                        this.router.navigate(['/students']);
-                        return true;
+                        this.model = data;
+                        if (this.gradeList.length > 0) {
+                            this.saveGrade();
+                        } else {
+                            this.showSuccess();
+                            this.router.navigate(['/students']);
+                        }
                     },
                     error => {
                         this.showError();
@@ -75,6 +92,38 @@ export class StudentEditComponent extends XPageEditComponent {
         } else {
             this. showValidationError();
         }
+    }
+
+    saveGrade() {
+        const newGradeList = this.gradeList.filter(x => x.id === 0);
+        let count = newGradeList.length;
+        for (const x of newGradeList) {
+            x.studentId = this.model.id;
+            this.dbGrade.addGrade(x).subscribe(
+                data => {
+                    count--;
+                    if (count === 0) {
+                        this.showSuccess();
+                        this.router.navigate(['/students']);
+                    }
+                },
+                error => {
+                    this.showError();
+                    return Observable.throw(error);
+                }
+            );
+        }
+    }
+
+    getGrade() {
+
+    }
+
+    addGrade() {
+        this.gradeModel.id = 0;
+        this.gradeList.push(this.gradeModel);
+        this.gradeList = [...this.gradeList]
+        this.showMessage('Added grade.');
     }
 
     validateInput(): boolean {
@@ -93,5 +142,13 @@ export class StudentEditComponent extends XPageEditComponent {
         } else {
             return true;
         }
+    }
+
+    loadCourseList() {
+        this.dbCourse.getCourses().subscribe(data => this.courseList = data);
+    }
+
+    loadGradeList() {
+        this.dbGrade.getGrade(this.editId).subscribe(data => this.gradeList = data);
     }
 }

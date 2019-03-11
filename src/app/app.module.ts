@@ -34,6 +34,7 @@ import {ProfileUpdateComponent} from './pages/profile/profile-update/profile-upd
 import {AdministrationComponent} from './pages/administration/administration.component';
 import {UserApi} from './data/api/user.api';
 import {CourseApi} from './data/api/course.api';
+import {GradeApi} from './data/api/grade.api';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import {CourseApi} from './data/api/course.api';
       BaseService,
       StudentApi,
       UserApi,
-      CourseApi
+      CourseApi,
+      GradeApi
   ],
   bootstrap: [AppComponent]
 })

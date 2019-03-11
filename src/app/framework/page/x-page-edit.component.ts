@@ -26,22 +26,23 @@ export class XPageEditComponent {
     }
 
     showSuccess() {
-        this.alertMessage = this.editMode ? this.modelName + ' updated successfully.' : this.modelName + ' added successfully.';
-        this.showDialog();
+        this.showMessage(this.editMode ? this.modelName + ' updated successfully.' : this.modelName + ' added successfully.');
     }
 
     showDeleted() {
-        this.alertMessage = this.modelName + ' deleted successfully.';
-        this.showDialog();
+        this.showMessage(this.modelName + ' deleted successfully.');
     }
 
     showValidationError() {
-        this.alertMessage = 'Error: Some fields are empty.';
-        this.showDialog();
+        this.showMessage('Error: Some fields are empty.');
     }
 
     showError() {
-        this.alertMessage = 'Error encountered.';
+        this.showMessage('Error encountered.');
+    }
+
+    showMessage(message) {
+        this.alertMessage = message;
         this.showDialog();
     }
 

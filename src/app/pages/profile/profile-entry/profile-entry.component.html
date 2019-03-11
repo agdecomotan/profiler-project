@@ -1,0 +1,26 @@
+<app-page [headerPanel]="headerPanel" [contentPanel]="contentPanel" [headerText]="pageTitle"></app-page>
+<ng-template #headerPanel>
+    <button type="button" class="btn btn-secondary" (click)="save()">Save</button>
+    <button type="button" class="btn btn-secondary" routerLink="/students">Cancel</button>
+</ng-template>
+
+<ng-template #contentPanel>
+    <div class="content-panel">
+        <div class="items-panel">
+            <div>
+                <!--<label>Student Number</label>-->
+                <!--<input type="text" class="form-control" [(ngModel)]="model.studentNumber" required-->
+                       <!--#name="ngModel">-->
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #alertTemplate let-c="close" let-d="dismiss">
+    <div class="modal-body">
+        <p>{{alertMessage}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">OK</button>
+    </div>
+</ng-template>

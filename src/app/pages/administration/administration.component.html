@@ -1,13 +1,13 @@
 <app-page [headerPanel]="headerPanel" [contentPanel]="contentPanel" [headerText]="'Administration'"></app-page>
 <ng-template #headerPanel>
-    <button type="button" *ngIf="currentTab == 'ngb-tab-1' || currentTab == 'ngb-tab-2'" [disabled]="!disabled" class="btn btn-secondary" (click)="new()">New</button>
-    <button type="button" *ngIf="currentTab == 'ngb-tab-1' || currentTab == 'ngb-tab-2'" [disabled]="disabled" class="btn btn-secondary" (click)="save()">Save</button>
-    <button type="button" *ngIf="currentTab == 'ngb-tab-1' || currentTab == 'ngb-tab-2'" [disabled]="disabled" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+    <button type="button" *ngIf="currentTab == 'user-tab' || currentTab == 'course-tab'" [disabled]="!disabled" class="btn btn-secondary" (click)="new()">New</button>
+    <button type="button" *ngIf="currentTab == 'user-tab' || currentTab == 'course-tab'" [disabled]="disabled" class="btn btn-secondary" (click)="save()">Save</button>
+    <button type="button" *ngIf="currentTab == 'user-tab' || currentTab == 'course-tab'" [disabled]="disabled" class="btn btn-secondary" (click)="cancel()">Cancel</button>
 </ng-template>
 
 <ng-template #contentPanel>
     <ngb-tabset [justify]="'left'" (tabChange)="tabChange($event)">
-        <ngb-tab title="Configuration" >
+        <ngb-tab title="Configuration" id="config-tab">
             <ng-template ngbTabContent >
                 <div class="items-panel">
                     <!--<div>-->
@@ -17,8 +17,8 @@
                 </div>
             </ng-template>
         </ngb-tab>
-        <ngb-tab title="Users">
-            <ng-template ngbTabContent >
+        <ngb-tab title="Users" id="user-tab">
+            <ng-template ngbTabContent>
                 <div class="content-panel">
                     <div class="items-panel">
                         <div>
@@ -62,7 +62,7 @@
                 </div>
             </ng-template>
         </ngb-tab>
-        <ngb-tab title="Courses">
+        <ngb-tab title="Courses" id="course-tab">
             <ng-template ngbTabContent >
                 <div class="content-panel">
                     <div class="items-panel">

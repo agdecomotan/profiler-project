@@ -49,33 +49,43 @@
             <ng-template ngbTabContent>
                 <div class="content-panel">
                     <div class="items-panel">
+                        <label>Year</label>
+                        <select class="form-control" [(ngModel)]="gradeModel.year">
+                            <option>2015</option>
+                            <option>2016</option>
+                            <option>2017</option>
+                            <option>2018</option>
+                            <option>2019</option>
+                        </select>
+
+                        <label>Term</label>
+                        <select class="form-control" [(ngModel)]="gradeModel.term">
+                            <option>1ST</option>
+                            <option>2ND</option>
+                        </select>
+
                         <label>Course</label>
                         <select class="form-control" [(ngModel)]="gradeModel.courseId">
-                            <option>Event</option>
-                            <option>Food</option>
-                            <option>Product</option>
-                            <option>Travel</option>
-                            <option>Invite</option>
-                            <option>Graphics</option>
+                            <option *ngFor="let item of courseList" [value]="item.id">
+                                {{item.title}}
+                            </option>
                         </select>
 
                         <label>Grade</label>
                         <input type="text" class="form-control" [(ngModel)]="gradeModel.value">
 
-                        <button type="button" class="btn btn-secondary btn-block">Add</button>
+                        <button type="button" class="btn btn-secondary add-grade" (click)="addGrade()">Add Grade</button>
                     </div>
                     <div class="items-panel">
                         <ngx-datatable
                                 class="bootstrap"
-                                [rows]="rows | async"
-                                [loadingIndicator]="loadingIndicator"
+                                [rows]="gradeList"
                                 [columns]="columns"
                                 [columnMode]="'force'"
                                 [limit]="5"
                                 [rowHeight]="'auto'"
                                 [headerHeight]="40"
-                                [footerHeight]="40"
-                                [reorderable]="reorderable">
+                                [footerHeight]="40">
                         </ngx-datatable>
                     </div>
                 </div>

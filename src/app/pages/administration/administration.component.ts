@@ -4,7 +4,7 @@ import {Course, User} from '../../data/model';
 import {UserApi} from '../../data/api/user.api';
 import {XPageEditComponent} from '../../framework/page/x-page-edit.component';
 import {ActivatedRoute} from '@angular/router';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {CourseApi} from '../../data/api/course.api';
 
 @Component({
@@ -25,7 +25,7 @@ export class AdministrationComponent extends XPageEditComponent implements OnIni
     courseRows: Observable<any>;
     courseModel: Course;
 
-    currentTab: '';
+    currentTab = '';
     constructor(private userApi: UserApi,
                 private courseApi: CourseApi,
                 public activatedRoute: ActivatedRoute,
@@ -51,7 +51,7 @@ export class AdministrationComponent extends XPageEditComponent implements OnIni
         ];
     }
 
-    tabChange($event) {
+    tabChange($event: NgbTabChangeEvent) {
         this.currentTab = $event.nextId;
         this.disabled = true;
     }
