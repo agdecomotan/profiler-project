@@ -76,7 +76,12 @@
                         </div>
                         <div>
                             <label>Specialization</label>
-                            <input type="text" class="form-control" [disabled]="disabled" [(ngModel)]="courseModel.specialization" placeholder="Specialization">
+                            <select [disabled]="disabled" [(ngModel)]='courseModel.specialization' class="form-control" placeholder="Specialization">
+                                <option value="" disabled selected>Specialization</option>
+                                <option value="SD">Software Development</option>
+                                <option value="MS">Multimedia Studies</option>
+                                <option value="DS">Distributed Systems</option>
+                            </select>
                         </div>
                         <div>
                             <label>Credit</label>
@@ -84,7 +89,11 @@
                         </div>
                         <div>
                             <label>Active</label>
-                            <input type="text" class="form-control" [disabled]="disabled" [(ngModel)]="courseModel.active" placeholder="Active">
+                            <select [disabled]="disabled" [(ngModel)]='courseModel.active' class="form-control" placeholder="Active">
+                                <option value="" disabled selected>Active</option>
+                                <option value="true">Yes</option>
+                                <option value="false">False</option>
+                            </select>
                         </div>
                     </div>
                     <div class="items-panel">

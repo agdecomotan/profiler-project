@@ -12,12 +12,16 @@ import {ProfileEntryComponent} from './pages/profile/profile-entry/profile-entry
 import {ProfileListComponent} from './pages/profile/profile-list/profile-list.component';
 import {ProfileUpdateComponent} from './pages/profile/profile-update/profile-update.component';
 import {AdministrationComponent} from './pages/administration/administration.component';
+import {LoginComponent} from './pages/login/login.component';
+import {AuthGuard} from './pages/login/auth-guard';
 
 const routes: Routes =
 [
+    {   path: 'login', component: LoginComponent},
     {
         path: '',
         component: MainComponent,
+        canActivate: [AuthGuard],
         children: [
             {path: '', redirectTo: 'students', pathMatch: 'full' },
             {path: 'students', component: StudentListComponent},
@@ -44,3 +48,4 @@ const routes: Routes =
   ],
 })
 export class AppRoutingModule { }
+

@@ -25,6 +25,10 @@ export class UserApi extends RestApi {
         return this.get<User>(this.baseUrl + 'get.php?id=' + id);
     }
 
+    public login(username: string, password: string): Observable<User> {
+        return this.get<User>(this.baseUrl + 'login.php?username=' + username + '&password=' + password);
+    }
+
     public addUser(object: User): Observable<User> {
         return this.post(this.baseUrl + 'add.php', object, this.options);
     }

@@ -67,7 +67,7 @@
                         <label>Course</label>
                         <select class="form-control" [(ngModel)]="gradeModel.courseId">
                             <option *ngFor="let item of courseList" [value]="item.id">
-                                {{item.title}}
+                                {{item.courseNumber}} : {{item.title}}
                             </option>
                         </select>
 

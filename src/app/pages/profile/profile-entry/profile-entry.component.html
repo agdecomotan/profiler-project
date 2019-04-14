@@ -7,10 +7,30 @@
 <ng-template #contentPanel>
     <div class="content-panel">
         <div class="items-panel">
-            <div>
-                <!--<label>Student Number</label>-->
-                <!--<input type="text" class="form-control" [(ngModel)]="model.studentNumber" required-->
-                       <!--#name="ngModel">-->
+            <label>Student</label>
+            <ng-select [items]="studentList"
+                       bindLabel="studentNumber"
+                       bindValue="id"
+                       placeholder="Select Student Number"
+                       [(ngModel)]="model.studentId">
+            </ng-select>
+
+            <br>
+            <label>Exam Result</label>
+            <div class="result-div">
+                Software Development
+                <input type="text" class="form-control" [(ngModel)]="model.sdExam" required
+                       #name="ngModel">
+            </div>
+            <div class="result-div">
+                Distributed Systems
+                <input type="text" class="form-control" [(ngModel)]="model.dsExam" required
+                       #name="ngModel">
+            </div>
+            <div class="result-div">
+                Multimedia Studies
+                <input type="text" class="form-control" [(ngModel)]="model.msExam" required
+                       #name="ngModel">
             </div>
         </div>
     </div>

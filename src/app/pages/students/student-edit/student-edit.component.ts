@@ -120,32 +120,36 @@ export class StudentEditComponent extends XPageEditComponent {
     }
 
     addGrade() {
+        const course = this.courseList.filter(x => x.id.toString() === this.gradeModel.courseId)[0];
         this.gradeModel.id = 0;
+        this.gradeModel.title = course.title;
         this.gradeList.push(this.gradeModel);
         this.gradeList = [...this.gradeList]
         this.showMessage('Added grade.');
+        this.gradeModel = new Grade();
     }
 
     validateInput(): boolean {
+        let valid = true;
         if (this.model.studentNumber === undefined || this.model.studentNumber === '') {
-            return false;
-        } if (this.model.firstName === undefined || this.model.firstName === '') {
-            return false;
-        } if (this.model.lastName === undefined || this.model.lastName === '') {
-            return false;
-        } if (this.model.yearLevel === undefined || this.model.yearLevel === '') {
-            return false;
-        } if (this.model.program === undefined || this.model.program === '') {
-            return false;
-        } if (this.model.email === undefined || this.model.email === '') {
-            return false;
-        } else {
-            return true;
+            valid = false;
+        } else if (this.model.firstName === undefined || this.model.firstName === '') {
+            valid = false;
+        } else if (this.model.lastName === undefined || this.model.lastName === '') {
+            valid = false;
+        } else if (this.model.yearLevel === undefined || this.model.yearLevel === '') {
+            valid = false;
+        } else if (this.model.program === undefined || this.model.program === '') {
+            valid = false;
+        } else if (this.model.email === undefined || this.model.email === '') {
+            valid = false;
         }
+
+        return valid;
     }
 
     loadCourseList() {
-        this.dbCourse.getCourses().subscribe(data => this.courseList = data);
+        this.dbCourse.getActiveCourse().subscribe(data => this.courseList = data);
     }
 
     loadGradeList() {

@@ -1,5 +1,6 @@
 import {Component, ElementRef, Input, OnInit, TemplateRef} from '@angular/core';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {Router} from '@angular/router';
 export interface IAppBrand {
   logo: string;
   primaryName: string;
@@ -21,7 +22,9 @@ export class XNavComponent implements OnInit {
     private sidebarVisible: boolean;
     confirmModal: NgbModalRef;
 
-    constructor(private element: ElementRef) {
+    constructor(private element: ElementRef,
+                public modalService: NgbModal,
+                private router: Router) {
         //public location: Location, private element: ElementRef, private modalService: NgbModal
         this.sidebarVisible = false;
     }
@@ -59,10 +62,12 @@ export class XNavComponent implements OnInit {
     }
 
     confirmLogout(dialog) {
-        //this.confirmModal = this.modalService.open(dialog);
+        this.confirmModal = this.modalService.open(dialog);
     }
 
     logout() {
+        localStorage.clear();
+        this.router.navigate(['/login']);
         this.confirmModal.close();
     }
 }

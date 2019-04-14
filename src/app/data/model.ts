@@ -23,9 +23,11 @@ export class Grade {
     id: number;
     courseId: number;
     studentId: number;
+    title: string;
     value: string;
     term: string;
     year: string;
+    courseSpecialization: string;
 }
 
 export class User {
@@ -41,14 +43,33 @@ export class User {
 export class Profile {
     id: number;
     dateCreated: string;
-    stageOneDate: string;
-    stageTwoDate: string;
-    stageOneResult: string;
-    stageTwoResult: string;
+    initialDate: string;
+    finalDate: string;
+    initialResultRank: string;
+    initialResult1: string;
+    initialResult2: string;
+    initialResult3: string;
+    initialResult1Label: string;
+    initialResult2Label: string;
+    initialResult3Label: string;
+    finalResultRank: string;
     finalResult: string;
+    finalResult1: string;
+    finalResult2: string;
+    finalResult3: string;
     status: string;
     studentId: string;
     userId: string;
+    sdExam: string;
+    dsExam: string;
+    msExam: string;
+    sdInterview: string;
+    dsInterview: string;
+    msInterview: string;
+    studentFirstName: string;
+    studentLastName: string;
+    studentNumber: string;
+    grades: Grade[];
 }
 
 export class Configuration {

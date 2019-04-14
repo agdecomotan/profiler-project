@@ -25,6 +25,10 @@ export class CourseApi extends RestApi {
         return this.get<Course>(this.baseUrl + 'get.php?id=' + id);
     }
 
+    public getActiveCourse(): Observable<Course[]> {
+        return this.get<Course[]>(this.baseUrl + 'get.php?status=true');
+    }
+
     public addCourse(object: Course): Observable<Course> {
         return this.post(this.baseUrl + 'add.php', object, this.options);
     }

@@ -68,7 +68,7 @@ export class AdministrationComponent extends XPageEditComponent implements OnIni
 
     delete() {
         this.confirmModal.close();
-        if (this.currentTab.indexOf('ngb-tab-1') >= 0) {
+        if (this.currentTab.indexOf('user-tab') >= 0) {
             this.modelName = 'User';
             this.userApi.deleteUser(this.currentModel).subscribe(
                 data => {
@@ -81,7 +81,7 @@ export class AdministrationComponent extends XPageEditComponent implements OnIni
                     return Observable.throw(error);
                 }
             );
-        } else if (this.currentTab.indexOf('ngb-tab-2') >= 0) {
+        } else if (this.currentTab.indexOf('course-tab') >= 0) {
             this.modelName = 'Course';
             this.courseApi.deleteCourse(this.currentModel).subscribe(
                 data => {
@@ -107,9 +107,9 @@ export class AdministrationComponent extends XPageEditComponent implements OnIni
     edit(id) {
         this.editMode = true;
         this.disabled = false;
-        if (this.currentTab.indexOf('ngb-tab-1') >= 0) {
+        if (this.currentTab.indexOf('user-tab') >= 0) {
             this.editUser(id);
-        } else if (this.currentTab.indexOf('ngb-tab-2') >= 0) {
+        } else if (this.currentTab.indexOf('course-tab') >= 0) {
             this.editCourse(id);
         }
     }
@@ -141,9 +141,9 @@ export class AdministrationComponent extends XPageEditComponent implements OnIni
     }
 
     save() {
-        if (this.currentTab.indexOf('ngb-tab-1') >= 0) {
+        if (this.currentTab.indexOf('user-tab') >= 0) {
             this.saveUser();
-        } else if (this.currentTab.indexOf('ngb-tab-2') >= 0) {
+        } else if (this.currentTab.indexOf('course-tab') >= 0) {
             this.saveCourse();
         }
     }

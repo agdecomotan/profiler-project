@@ -1,6 +1,6 @@
 <app-page [headerPanel]="headerPanel" [contentPanel]="contentPanel" [headerText]="'Course Track'"></app-page>
 <ng-template #headerPanel>
-    <select class="form-control">
+    <select  [(ngModel)]='dateSelect' (change)="changeDate()" class="form-control">
         <option value="" disabled selected>Year Admitted to Track</option>
         <option value="2018">2018</option>
         <option value="2019">2019</option>
@@ -8,12 +8,12 @@
 </ng-template>
 
 <ng-template #contentPanel>
-    <ngb-tabset [justify]="'left'">
-        <ngb-tab title="Software Development">
+    <ngb-tabset [justify]="'left'" (tabChange)="tabChange($event)">
+        <ngb-tab title="Software Development" id="sd">
             <ng-template ngbTabContent >
                 <ngx-datatable
                         class="bootstrap"
-                        [rows]="rows | async"
+                        [rows]="sdRows"
                         [loadingIndicator]="loadingIndicator"
                         [columns]="columns"
                         [columnMode]="'force'"
@@ -25,11 +25,11 @@
                 </ngx-datatable>
             </ng-template>
         </ngb-tab>
-        <ngb-tab title="Distributed Systems">
+        <ngb-tab title="Distributed Systems" id="ds">
             <ng-template ngbTabContent >
                 <ngx-datatable
                         class="bootstrap"
-                        [rows]="rows | async"
+                        [rows]="dsRows"
                         [loadingIndicator]="loadingIndicator"
                         [columns]="columns"
                         [columnMode]="'force'"
@@ -41,11 +41,11 @@
                 </ngx-datatable>
             </ng-template>
         </ngb-tab>
-        <ngb-tab title="Multimedia Studies">
+        <ngb-tab title="Multimedia Studies" id="ms">
             <ng-template ngbTabContent >
                 <ngx-datatable
                         class="bootstrap"
-                        [rows]="rows | async"
+                        [rows]="msRows"
                         [loadingIndicator]="loadingIndicator"
                         [columns]="columns"
                         [columnMode]="'force'"

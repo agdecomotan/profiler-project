@@ -25,6 +25,11 @@ export class GradeApi extends RestApi {
         return this.get<Grade[]>(this.baseUrl + 'get.php?id=' + id);
     }
 
+    public getSDGrade(id: string): Observable<Grade[]> {
+        return this.get<Grade[]>(this.baseUrl + 'get.php?specialization=SD&id=' + id);
+    }
+
+
     public addGrade(object: Grade): Observable<Grade> {
         return this.post(this.baseUrl + 'add.php', object, this.options);
     }

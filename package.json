@@ -22,10 +22,11 @@
     "@angular/router": "7.2.7",
     "@angular/typescript": "^2.0.0-5d0e199",
     "@ng-bootstrap/ng-bootstrap": "4.0.4",
+    "@ng-select/ng-select": "^2.16.2",
     "@swimlane/ngx-datatable": "^14.0.0",
     "bootstrap": "4.3.1",
     "core-js": "^2.6.5",
-    "jquery": "3.3.1",
+    "jquery": "^3.3.1",
     "jw-bootstrap-switch-ng2": "2.0.5",
     "ng2-nouislider": "1.7.13",
     "ng2-nvd3": "^2.0.0",
@@ -37,16 +38,16 @@
     "rxjs-compat": "^6.0.0-rc.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.13.0",
-    "@angular/cli": "^7.3.3",
-    "@angular/compiler-cli": "^7.2.7",
+    "@angular-devkit/build-angular": "^0.13.5",
+    "@angular/cli": "^7.3.5",
+    "@angular/compiler-cli": "^7.2.9",
     "@angular/language-service": "7.2.7",
     "@types/jasmine": "3.3.9",
-    "@types/node": "^11.9.5",
+    "@types/node": "^11.11.3",
     "codelyzer": "~4.5.0",
     "jasmine-core": "~3.3.0",
     "jasmine-spec-reporter": "~4.2.1",
-    "karma": "~4.0.0",
+    "karma": "^4.0.1",
     "karma-chrome-launcher": "~2.2.0",
     "karma-cli": "~2.0.0",
     "karma-coverage-istanbul-reporter": "^2.0.5",
@@ -55,6 +56,6 @@
     "protractor": "~5.4.2",
     "ts-node": "~8.0.2",
     "tslint": "~5.13.0",
-    "typescript": "^3.2.4"
+    "typescript": "3.1.6"
   }
 }

@@ -8,6 +8,7 @@ import {HttpClientModule} from '@angular/common/http';
 // Library
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {NvD3Module} from 'ng2-nvd3';
+import { NgSelectModule } from '@ng-select/ng-select';
 import 'd3';
 import 'nvd3'
 
@@ -35,6 +36,9 @@ import {AdministrationComponent} from './pages/administration/administration.com
 import {UserApi} from './data/api/user.api';
 import {CourseApi} from './data/api/course.api';
 import {GradeApi} from './data/api/grade.api';
+import {ProfileApi} from './data/api/profile.api';
+import { LoginComponent } from './pages/login/login.component';
+import {AuthGuard} from './pages/login/auth-guard';
 
 @NgModule({
   declarations: [
@@ -51,7 +55,8 @@ import {GradeApi} from './data/api/grade.api';
       ProfileEntryComponent,
       ProfileListComponent,
       ProfileUpdateComponent,
-      AdministrationComponent
+      AdministrationComponent,
+      LoginComponent
   ],
   imports: [
       BrowserModule,
@@ -62,14 +67,17 @@ import {GradeApi} from './data/api/grade.api';
       NgxDatatableModule,
       NvD3Module,
       RouterModule,
-      AppRoutingModule
+      AppRoutingModule,
+      NgSelectModule
   ],
   providers: [
       BaseService,
       StudentApi,
       UserApi,
       CourseApi,
-      GradeApi
+      GradeApi,
+      ProfileApi,
+      AuthGuard
   ],
   bootstrap: [AppComponent]
 })

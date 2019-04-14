@@ -1,17 +1,17 @@
 <app-page [headerPanel]="headerPanel" [contentPanel]="contentPanel" [headerText]="'Profiles'"></app-page>
 <ng-template #headerPanel>
-    <button type="button" class="btn btn-secondary" routerLink="/profile-entry">Add</button>
-    <button type="button" class="btn btn-secondary">Profile</button>
-    <button type="button" class="btn btn-secondary">Email Result</button>
+    <button type="button" *ngIf="currentTab === 'all'" class="btn btn-secondary" routerLink="/profile-entry">Add</button>
+    <button type="button" *ngIf="currentTab === 'initial'" class="btn btn-secondary" (click)="initialProfile()">Execute Initial Profiling</button>
+    <button type="button" *ngIf="currentTab === 'initialcompleted'" class="btn btn-secondary" (click)="finalProfile()">Execute Final Profiling</button>
 </ng-template>
 
 <ng-template #contentPanel>
-    <ngb-tabset [justify]="'left'">
-        <ngb-tab title="All">
+    <ngb-tabset [justify]="'left'" (tabChange)="tabChange($event)">
+        <ngb-tab title="All" id="all">
             <ng-template ngbTabContent >
                 <ngx-datatable
                         class="bootstrap"
-                        [rows]="rows | async"
+                        [rows]="rows"
                         [loadingIndicator]="loadingIndicator"
                         [columns]="columns"
                         [columnMode]="'force'"
@@ -20,14 +20,38 @@
                         [headerHeight]="40"
                         [footerHeight]="40"
                         [reorderable]="reorderable">
+                    <ngx-datatable-column prop="dateCreated">
+                        <ng-template let-column="column" ngx-datatable-header-template>
+                            Date
+                        </ng-template>
+                        <ng-template let-value="value" ngx-datatable-cell-template>
+                            {{value | date: 'MM/dd/yyyy'}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column>
+                        <ng-template let-column="column" ngx-datatable-header-template>
+                            Student
+                        </ng-template>
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{row.studentFirstName}} {{row.studentLastName}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column prop="status">
+                        <ng-template let-column="column" ngx-datatable-header-template>
+                            Status
+                        </ng-template>
+                        <ng-template let-value="value" ngx-datatable-cell-template>
+                            {{value}}
+                        </ng-template>
+                    </ngx-datatable-column>
                 </ngx-datatable>
             </ng-template>
         </ngb-tab>
-        <ngb-tab title="Stage 1">
+        <ngb-tab title="Initial" id="initial">
             <ng-template ngbTabContent >
                 <ngx-datatable
                         class="bootstrap"
-                        [rows]="rows | async"
+                        [rows]="rowsStageInitial"
                         [loadingIndicator]="loadingIndicator"
                         [columns]="columns"
                         [columnMode]="'force'"
@@ -36,14 +60,38 @@
                         [headerHeight]="40"
                         [footerHeight]="40"
                         [reorderable]="reorderable">
+                    <ngx-datatable-column prop="dateCreated">
+                        <ng-template let-column="column" ngx-datatable-header-template>
+                            Date
+                        </ng-template>
+                        <ng-template let-value="value" ngx-datatable-cell-template>
+                            {{value | date: 'MM/dd/yyyy'}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column>
+                        <ng-template let-column="column" ngx-datatable-header-template>
+                            Student
+                        </ng-template>
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{row.studentFirstName}} {{row.studentLastName}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column prop="status">
+                        <ng-template let-column="column" ngx-datatable-header-template>
+                            Status
+                        </ng-template>
+                        <ng-template let-value="value" ngx-datatable-cell-template>
+                            {{value}}
+                        </ng-template>
+                    </ngx-datatable-column>
                 </ngx-datatable>
             </ng-template>
         </ngb-tab>
-        <ngb-tab title="Stage 2">
+        <ngb-tab title="Initial Completed" id="initialcompleted">
             <ng-template ngbTabContent >
                 <ngx-datatable
                         class="bootstrap"
-                        [rows]="rows | async"
+                        [rows]="rowsStageInitialCompleted"
                         [loadingIndicator]="loadingIndicator"
                         [columns]="columns"
                         [columnMode]="'force'"
@@ -52,8 +100,164 @@
                         [headerHeight]="40"
                         [footerHeight]="40"
                         [reorderable]="reorderable">
+                    <ngx-datatable-column prop="dateCreated">
+                        <ng-template let-column="column" ngx-datatable-header-template>
+                            Date
+                        </ng-template>
+                        <ng-template let-value="value" ngx-datatable-cell-template>
+                            {{value | date: 'MM/dd/yyyy'}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column>
+                        <ng-template let-column="column" ngx-datatable-header-template>
+                            Student
+                        </ng-template>
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{row.studentFirstName}} {{row.studentLastName}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column prop="status">
+                        <ng-template let-column="column" ngx-datatable-header-template>
+                            Status
+                        </ng-template>
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            <span *ngIf="row.sdInterview !== '' && row.dsInterview !== '' && row.msInterview !== ''">Profile Updated</span>
+                            <span *ngIf="row.sdInterview === '' && row.dsInterview === '' && row.msInterview === ''">{{row.status}}</span>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column>
+                        <ng-template let-column="column" ngx-datatable-header-template>
+                            <div class="center-header">
+                                Initial Profile Result
+                            </div>
+                        </ng-template>
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            <div class="center-header">
+                                <button md-icon-button (click)="initialProfileResult(row)">
+                                    <i class="fa fa-sticky-note"></i>
+                                </button>
+                            </div>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column>
+                        <ng-template let-column="column" ngx-datatable-header-template>
+                            <div class="center-header">
+                                Interview Result
+                            </div>
+                        </ng-template>
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            <div class="center-header">
+                                <button md-icon-button (click)="updateProfile(row)">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                            </div>
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Final Completed" id="finalcompleted">
+            <ng-template ngbTabContent >
+                <ngx-datatable
+                        class="bootstrap"
+                        [rows]="rowsStageFinal"
+                        [loadingIndicator]="loadingIndicator"
+                        [columns]="columns"
+                        [columnMode]="'force'"
+                        [limit]="8"
+                        [rowHeight]="'auto'"
+                        [headerHeight]="40"
+                        [footerHeight]="40"
+                        [reorderable]="reorderable">
+                    <ngx-datatable-column prop="dateCreated">
+                        <ng-template let-column="column" ngx-datatable-header-template>
+                            Date
+                        </ng-template>
+                        <ng-template let-value="value" ngx-datatable-cell-template>
+                            {{value | date: 'MM/dd/yyyy'}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column>
+                        <ng-template let-column="column" ngx-datatable-header-template>
+                            Student
+                        </ng-template>
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{row.studentFirstName}} {{row.studentLastName}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column prop="status">
+                        <ng-template let-column="column" ngx-datatable-header-template>
+                            Status
+                        </ng-template>
+                        <ng-template let-value="value" ngx-datatable-cell-template>
+                            {{value}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column align="center">
+                        <ng-template let-column="column" ngx-datatable-header-template>
+                            <div class="center-header">
+                                Email Result
+                            </div>
+                        </ng-template>
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            <div class="center-header">
+                                <button md-icon-button (click)="emailResult(row)">
+                                    <i class="fa fa-envelope"></i>
+                                </button>
+                            </div>
+                        </ng-template>
+                    </ngx-datatable-column>
                 </ngx-datatable>
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
 </ng-template>
+
+<ng-template #alertTemplate let-c="close" let-d="dismiss">
+    <div class="modal-body">
+        <p>{{alertMessage}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">OK</button>
+    </div>
+</ng-template>
+
+<ng-template #inputTemplate let-c="close" let-d="dismiss">
+    <div class="modal-body">
+        <label>Interview Result</label>
+        <div class="result-div">
+            Software Development
+            <input type="text" class="form-control" [(ngModel)]="model.sdInterview" required
+                   #name="ngModel">
+        </div>
+        <div class="result-div">
+            Distributed Systems
+            <input type="text" class="form-control" [(ngModel)]="model.dsInterview" required
+                   #name="ngModel">
+        </div>
+        <div class="result-div">
+            Multimedia Studies
+            <input type="text" class="form-control" [(ngModel)]="model.msInterview" required
+                   #name="ngModel">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="save()">Save</button>
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cancel</button>
+    </div>
+</ng-template>
+
+<ng-template #initialProfileTemplate let-c="close" let-d="dismiss">
+    <div class="modal-body">
+        <p>1st: {{initialProfileModel.initialResult1Label}} </p>
+        <p>Rank: {{initialProfileModel.initialResultRank}} </p>
+        <br/>
+        <p>2nd: {{initialProfileModel.initialResult2Label}}</p> <br/>
+        <p>3rd: {{initialProfileModel.initialResult3Label}}</p> <br/>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">OK</button>
+    </div>
+</ng-template>
+
+
