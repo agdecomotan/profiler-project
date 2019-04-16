@@ -33,6 +33,9 @@ export class ProfileListComponent extends XPageEditComponent {
     currentTab = 'all';
     model: Profile;
     initialProfileModel: Profile;
+    dsList = [];
+    msList = [];
+    sdList = [];
 
     @ViewChild('inputTemplate') inputTemplate: TemplateRef<any>;
     @ViewChild('initialProfileTemplate') initialProfileTemplate: TemplateRef<any>;
@@ -170,28 +173,102 @@ export class ProfileListComponent extends XPageEditComponent {
         this.loadInitialProfileList();
     }
 
-    finalProfile() {
-        const profile = this.rowsStageInitialCompleted.filter(x => x.sdInterview !== '' && x.dsInterview !== '' && x.msInterview !== '');
-        let count = profile.length;
-        for (const x of profile) {
-            x.status = 'Final Completed';
-            x.finalResult = 'Distributed Systems';
-            const datePipe = new DatePipe('en-US');
-            x.finalDate = datePipe.transform(Date.now(), 'dd/MM/yyyy');
-            this.db.updateProfile(x).subscribe(
-                data => {
-                    count--;
-                    if (count === 0) {
-                        this.showMessage('Completed final profiling.');
-                    }
-                },
-                error => {
-                    this.showError();
-                    return Observable.throw(error);
-                }
-            );
+    getResultForTrack(track, initialResult1, initialResult2, initialResult3){
+        if (initialResult1['result'] === track) {
+           return initialResult1['value'];
+        } else if (initialResult2['result'] === track) {
+            return initialResult2['value'];
+        } else if (initialResult3['result'] === track) {
+            return initialResult3['value'];
         }
-        this.loadInitialCompletedList();
+    }
+
+    finalProfile() {
+        const list = this.rowsStageInitialCompleted.filter(x => x.sdInterview !== '' && x.dsInterview !== '' && x.msInterview !== '');
+        let count = list.length;
+        const quoata = 1;
+        if (count === this.rowsStageInitialCompleted.length) {
+            const computedList = this.computeFinal(list);
+            const updateList = [];
+            const sdList = computedList.filter(sd => sd.finalResult1['result'] === 'SD');
+            sdList.sort((a, b) => b.finalResult1['value'] - a.finalResult1['value']);
+            count = 0;
+            for (const xx of sdList) {
+                count++;
+                xx.finalResultRank = count;
+            }
+            // updateList.push(...sdList);
+
+            this.msList = computedList.filter(sd => sd.finalResult1['result'] === 'MS');
+            this.msList.sort((a, b) => b.finalResult1['value'] - a.finalResult1['value']);
+            count = 0;
+            for (const xx of this.msList) {
+                count++;
+                xx.finalResultRank = count;
+            }
+            // updateList.push(...msList);
+
+            this.dsList = computedList.filter(sd => sd.finalResult1['result'] === 'DS');
+            this.dsList.sort((a, b) => b.finalResult1['value'] - a.finalResult1['value']);
+            count = 0;
+            for (const xx of this.dsList) {
+                count++;
+                xx.finalResultRank = count;
+            }
+            // updateList.push(...dsList);
+
+            // const acceptExceedQuota = (dsList.length > quoata && msList.length > quoata && sdList.length > quoata) ? true : false;
+            // if (dsList.length > quoata && !acceptExceedQuota) {
+            //
+            // }
+
+            this.loadInitialCompletedList();
+        } else {
+            this.showMessage('Input interview result in all profiles.');
+        }
+    }
+
+
+
+    saveFinal() {
+        // x.status = 'Final Completed';
+        // x.finalResult = 'Distributed Systems';
+        // const datePipe = new DatePipe('en-US');
+        // x.finalDate = datePipe.transform(Date.now(), 'dd/MM/yyyy');
+        // this.db.updateProfile(x).subscribe(
+        //     data => {
+        //         count--;
+        //         if (count === 0) {
+        //             this.showMessage('Completed final profiling.');
+        //         }
+        //     },
+        //     error => {
+        //         this.showError();
+        //         return Observable.throw(error);
+        //     }
+        // );
+    }
+
+    computeFinal(list) {
+        for (const x of list) {
+            const result1 = JSON.parse(x.initialResult1);
+            const result2 = JSON.parse(x.initialResult2);
+            const result3 = JSON.parse(x.initialResult3);
+
+            const sdResult = this.getResultForTrack('SD', result1, result2, result3) + x.sdInterview;
+            const msResult = this.getResultForTrack('MS', result1, result2, result3) + x.msInterview;
+            const dsResult = this.getResultForTrack('DS', result1, result2, result3) + x.dsInterview;
+
+            const result = [{'result': 'SD', 'value': sdResult},
+                {'result': 'DS', 'value': dsResult},
+                {'result': 'MS', 'value': msResult}];
+            result.sort((a, b) => b.value - a.value);
+
+            x.finalResult1 = result[0];
+            x.finalResult2 = result[1];
+            x.finalResult3 = result[2];
+        }
+        return list;
     }
 
     updateProfile(value) {
