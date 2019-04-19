@@ -261,6 +261,11 @@
         <p>3rd: {{profileModel.result3Label}}</p> <br/>
         <br/>
         <p *ngIf="this.initial">Student Choice: {{profileModel.studentChoice}}</p>
+        <p *ngIf="!this.initial">Result Accepted by Student: {{profileModel.accepted}}</p>
+        <div *ngIf="!this.initial">
+            <button type="button" class="btn btn-light" (click)="acceptResult('Yes')">Accept</button>
+            <button type="button" class="btn btn-light" (click)="acceptResult('No')">Not accept</button>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-light" (click)="c('Close click')">OK</button>

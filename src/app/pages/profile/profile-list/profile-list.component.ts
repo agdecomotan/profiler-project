@@ -118,9 +118,9 @@ export class ProfileListComponent extends XPageEditComponent {
             let sdResult = 0;
             let dsResult = 0;
             let msResult = 0;
-            const getSDGrade = x.grades.filter(c => c.courseSpecialization === 'SD').forEach(f => sdResult += Number(f.value));
-            const getDSGrade = x.grades.filter(c => c.courseSpecialization === 'DS').forEach(f => dsResult += Number(f.value));
-            const getMSGrade = x.grades.filter(c => c.courseSpecialization === 'MS').forEach(f => msResult += Number(f.value));
+            const getSDGrade = x.grades.filter(c => c.courseSpecialization === 'SD').forEach(f => sdResult += (5 - Number(f.value)));
+            const getDSGrade = x.grades.filter(c => c.courseSpecialization === 'DS').forEach(f => dsResult += (5 - Number(f.value)));
+            const getMSGrade = x.grades.filter(c => c.courseSpecialization === 'MS').forEach(f => msResult += (5 - Number(f.value)));
 
             sdResult += Number(x.sdExam);
             dsResult += Number(x.dsExam);
@@ -440,6 +440,8 @@ export class ProfileListComponent extends XPageEditComponent {
         this.profileModel.result3Label = result3 === 'SD' ? 'Software Development' :
             (result3 === 'MS' ? 'Multimedia Studies' : 'Distributed Systems');
         this.profileModel.resultRankLabel = rank;
+
+        this.profileModel.accepted = this.profileModel.accepted !== undefined ? this.profileModel.accepted : 'No';
         this.modalService.open(this.profileTemplate);
     }
 
@@ -461,6 +463,20 @@ export class ProfileListComponent extends XPageEditComponent {
                 this.showMessage('Updated profile');
                 this.modalService.dismissAll();
                 this.loadInitialCompletedList();
+            },
+            error => {
+                this.showError();
+                return Observable.throw(error);
+            }
+        );
+    }
+
+    acceptResult(value) {
+        this.profileModel.accepted = value;
+        this.db.updateProfile(this.profileModel).subscribe(
+            data => {
+                this.showMessage('Updated profile');
+                this.modalService.dismissAll();
             },
             error => {
                 this.showError();

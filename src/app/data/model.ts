@@ -78,6 +78,7 @@ export class Profile {
     studentLastName: string;
     studentNumber: string;
     grades: Grade[];
+    accepted: string;
 }
 
 export class Configuration {

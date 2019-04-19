@@ -97,7 +97,8 @@ export class ReportListComponent {
             }
         };
 
-        this.db.getProfileByResult('result', '2019').subscribe(data => {
+        const currentYear = (new Date()).getFullYear();
+        this.db.getProfileByResult('result', currentYear.toString()).subscribe(data => {
             this.studentPerTrackChartData = [];
             const dsList = data.filter(sd => JSON.parse(sd.finalResult1)['result'] === 'DS');
             const sdList = data.filter(sd => JSON.parse(sd.finalResult1)['result'] === 'SD');

@@ -44,7 +44,7 @@
                     <div class="items-panel">
                         <div>
                             <label>Year Level</label>
-                            <input type="text" class="form-control" [(ngModel)]="model.yearLevel">
+                            <input type="number" class="form-control" [(ngModel)]="model.yearLevel">
                         </div>
                         <div>
                             <label>Program</label>
@@ -81,7 +81,19 @@
                         </select>
 
                         <label>Grade</label>
-                        <input type="text" class="form-control" [(ngModel)]="gradeModel.value">
+                        <select class="form-control" [(ngModel)]="gradeModel.value">
+                            <option>1</option>
+                            <option>1.25</option>
+                            <option>1.5</option>
+                            <option>1.75</option>
+                            <option>2</option>
+                            <option>2.25</option>
+                            <option>2.5</option>
+                            <option>2.75</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
 
                         <button type="button" class="btn btn-secondary add-grade" (click)="addGrade()">Add Grade</button>
                     </div>
