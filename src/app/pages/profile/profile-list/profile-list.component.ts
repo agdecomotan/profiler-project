@@ -246,7 +246,7 @@ export class ProfileListComponent extends XPageEditComponent {
     }
 
     applyQuoata(level) {
-        const acceptExceedQuota = (this.dsList.length >= this.quoata && this.msList.length >= this.quoata && this.sdList.length >= this.quoata) ? true : false;
+        const acceptExceedQuota = (this.dsList.length >= this.quota && this.msList.length >= this.quota && this.sdList.length >= this.quota) ? true : false;
         const quoataMs = [];
         const quoataDs = [];
         const quoataSd = [];
@@ -256,9 +256,9 @@ export class ProfileListComponent extends XPageEditComponent {
         let countSd = this.sdList.length;
 
         if (!acceptExceedQuota) {
-            if (this.dsList.length > this.quoata) {
-                const cutoff = this.dsList.splice(this.quoata);
-                this.dsList = this.dsList.splice(0, this.quoata);
+            if (this.dsList.length > this.quota) {
+                const cutoff = this.dsList.splice(this.quota);
+                this.dsList = this.dsList.splice(0, this.quota);
                 for (const xx of cutoff) {
                     const final1 = xx.finalResult1;
                     const final2 = level === 1 ? xx.finalResult2 : xx.finalResult3;
@@ -270,10 +270,10 @@ export class ProfileListComponent extends XPageEditComponent {
                         xx.finalResult3 = final1;
                     }
 
-                    if (value === 'MS' && countMs < this.quoata) {
+                    if (value === 'MS' && countMs < this.quota) {
                         quoataMs.push(xx);
                         countMs++;
-                    } else if (value === 'SD' && countSd < this.quoata) {
+                    } else if (value === 'SD' && countSd < this.quota) {
                         quoataSd.push(xx);
                         countSd++
                     } else {
@@ -288,9 +288,9 @@ export class ProfileListComponent extends XPageEditComponent {
                 }
             }
 
-            if (this.msList.length > this.quoata) {
-                const cutoff = this.msList.splice(this.quoata);
-                this.msList = this.msList.splice(0, this.quoata);
+            if (this.msList.length > this.quota) {
+                const cutoff = this.msList.splice(this.quota);
+                this.msList = this.msList.splice(0, this.quota);
                 for (const xx of cutoff) {
                     const final1 = xx.finalResult1;
                     const final2 = level === 1 ? xx.finalResult2 : xx.finalResult3;
@@ -302,10 +302,10 @@ export class ProfileListComponent extends XPageEditComponent {
                         xx.finalResult3 = final1;
                     }
 
-                    if (value === 'SD' && countSd < this.quoata) {
+                    if (value === 'SD' && countSd < this.quota) {
                         quoataSd.push(xx);
                         countSd++;
-                    } else if (value === 'DS' && countDs < this.quoata) {
+                    } else if (value === 'DS' && countDs < this.quota) {
                         quoataDs.push(xx);
                         countDs++;
                     } else {
@@ -320,9 +320,9 @@ export class ProfileListComponent extends XPageEditComponent {
                 }
             }
 
-            if (this.sdList.length > this.quoata) {
-                const cutoff = this.sdList.splice(this.quoata);
-                this.sdList = this.sdList.splice(0, this.quoata);
+            if (this.sdList.length > this.quota) {
+                const cutoff = this.sdList.splice(this.quota);
+                this.sdList = this.sdList.splice(0, this.quota);
                 for (const xx of cutoff) {
                     const final1 = xx.finalResult1;
                     const final2 = level === 1 ? xx.finalResult2 : xx.finalResult3;
@@ -334,10 +334,10 @@ export class ProfileListComponent extends XPageEditComponent {
                         xx.finalResult3 = final1;
                     }
 
-                    if (value === 'MS' && countMs < this.quoata) {
+                    if (value === 'MS' && countMs < this.quota) {
                         quoataMs.push(xx);
                         countMs++;
-                    } else if (value === 'DS' && countDs < this.quoata) {
+                    } else if (value === 'DS' && countDs < this.quota) {
                         quoataDs.push(xx);
                         countDs++;
                     } else {
