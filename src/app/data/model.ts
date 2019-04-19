@@ -7,6 +7,7 @@ export class Student {
     program: string;
     email: string;
     dateCreated: string;
+    gender: string;
     grades: Grade[]
 }
 
@@ -17,6 +18,12 @@ export class Course {
     specialization: string;
     credit: string;
     active: boolean;
+}
+
+export class Setting {
+    id: number;
+    name: string;
+    value: string;
 }
 
 export class Grade {
@@ -49,11 +56,12 @@ export class Profile {
     initialResult1: string;
     initialResult2: string;
     initialResult3: string;
-    initialResult1Label: string;
-    initialResult2Label: string;
-    initialResult3Label: string;
+    resultRankLabel: string;
+    result1Label: string;
+    result2Label: string;
+    result3Label: string;
     finalResultRank: string;
-    finalResult: string;
+    studentChoice: string;
     finalResult1: string;
     finalResult2: string;
     finalResult3: string;

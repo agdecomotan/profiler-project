@@ -193,6 +193,20 @@
                             {{value}}
                         </ng-template>
                     </ngx-datatable-column>
+                    <ngx-datatable-column>
+                        <ng-template let-column="column" ngx-datatable-header-template>
+                            <div class="center-header">
+                                Final Profile Result
+                            </div>
+                        </ng-template>
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            <div class="center-header">
+                                <button md-icon-button (click)="finalProfileResult(row)">
+                                    <i class="fa fa-sticky-note"></i>
+                                </button>
+                            </div>
+                        </ng-template>
+                    </ngx-datatable-column>
                     <ngx-datatable-column align="center">
                         <ng-template let-column="column" ngx-datatable-header-template>
                             <div class="center-header">
@@ -211,15 +225,6 @@
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
-</ng-template>
-
-<ng-template #alertTemplate let-c="close" let-d="dismiss">
-    <div class="modal-body">
-        <p>{{alertMessage}}</p>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-light" (click)="c('Close click')">OK</button>
-    </div>
 </ng-template>
 
 <ng-template #inputTemplate let-c="close" let-d="dismiss">
@@ -247,13 +252,24 @@
     </div>
 </ng-template>
 
-<ng-template #initialProfileTemplate let-c="close" let-d="dismiss">
+<ng-template #profileTemplate let-c="close" let-d="dismiss">
     <div class="modal-body">
-        <p>1st: {{initialProfileModel.initialResult1Label}} </p>
-        <p>Rank: {{initialProfileModel.initialResultRank}} </p>
+        <p>1st: {{profileModel.result1Label}} </p>
+        <p>Rank: {{profileModel.resultRankLabel}} </p>
         <br/>
-        <p>2nd: {{initialProfileModel.initialResult2Label}}</p> <br/>
-        <p>3rd: {{initialProfileModel.initialResult3Label}}</p> <br/>
+        <p>2nd: {{profileModel.result2Label}}</p> <br/>
+        <p>3rd: {{profileModel.result3Label}}</p> <br/>
+        <br/>
+        <p *ngIf="this.initial">Student Choice: {{profileModel.studentChoice}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">OK</button>
+    </div>
+</ng-template>
+
+<ng-template #alertTemplate let-c="close" let-d="dismiss">
+    <div class="modal-body">
+        <p>{{alertMessage}}</p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-light" (click)="c('Close click')">OK</button>

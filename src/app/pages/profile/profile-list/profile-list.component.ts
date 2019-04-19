@@ -3,11 +3,11 @@ import {ProfileApi} from '../../../data/api/profile.api';
 import {NgbModal, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {Observable} from 'rxjs/Rx';
 import {XPageEditComponent} from '../../../framework/page/x-page-edit.component';
-import {StudentApi} from '../../../data/api/student.api';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {Profile} from '../../../data/model';
-import { DatePipe } from '@angular/common';
+import {DatePipe} from '@angular/common';
 import {GradeApi} from '../../../data/api/grade.api';
+import {SettingApi} from '../../../data/api/setting.api';
 
 @Component({
     selector: 'app-profile-list',
@@ -32,20 +32,25 @@ export class ProfileListComponent extends XPageEditComponent {
     reorderable = true;
     currentTab = 'all';
     model: Profile;
-    initialProfileModel: Profile;
+    initial = true;
+    profileModel: Profile;
     dsList = [];
     msList = [];
     sdList = [];
+    quota = 0;
+    letterSign = '';
 
     @ViewChild('inputTemplate') inputTemplate: TemplateRef<any>;
-    @ViewChild('initialProfileTemplate') initialProfileTemplate: TemplateRef<any>;
+    @ViewChild('profileTemplate') profileTemplate: TemplateRef<any>;
 
     constructor(private db: ProfileApi,
                 private gradeDb: GradeApi,
+                private settingApi: SettingApi,
                 public activatedRoute: ActivatedRoute,
                 public modalService: NgbModal) {
         super(modalService, activatedRoute, 'Profile');
         this.loadList();
+        this.loadSetting();
     }
 
     tabChange($event: NgbTabChangeEvent) {
@@ -71,6 +76,19 @@ export class ProfileListComponent extends XPageEditComponent {
 
     loadInitialCompletedList() {
         this.db.getProfileByStatus('Initial Completed').subscribe(data => this.rowsStageInitialCompleted = data);
+    }
+
+    loadSetting() {
+        this.settingApi.getSettings().subscribe(
+            data => {
+                this.quota = Number(data.filter(x => x.name === 'quota')[0].value);
+                this.letterSign = data.filter(x => x.name === 'lettersign')[0].value;
+            },
+            error => {
+                this.showError();
+                return Observable.throw(error);
+            }
+        );
     }
 
     loadFinalList() {
@@ -185,68 +203,190 @@ export class ProfileListComponent extends XPageEditComponent {
 
     finalProfile() {
         const list = this.rowsStageInitialCompleted.filter(x => x.sdInterview !== '' && x.dsInterview !== '' && x.msInterview !== '');
-        let count = list.length;
+        const count = list.length;
         const quoata = 1;
         if (count === this.rowsStageInitialCompleted.length) {
             const computedList = this.computeFinal(list);
             const updateList = [];
-            const sdList = computedList.filter(sd => sd.finalResult1['result'] === 'SD');
-            sdList.sort((a, b) => b.finalResult1['value'] - a.finalResult1['value']);
-            count = 0;
-            for (const xx of sdList) {
-                count++;
-                xx.finalResultRank = count;
-            }
-            // updateList.push(...sdList);
-
+            this.sdList = computedList.filter(sd => sd.finalResult1['result'] === 'SD');
             this.msList = computedList.filter(sd => sd.finalResult1['result'] === 'MS');
-            this.msList.sort((a, b) => b.finalResult1['value'] - a.finalResult1['value']);
-            count = 0;
-            for (const xx of this.msList) {
-                count++;
-                xx.finalResultRank = count;
-            }
-            // updateList.push(...msList);
-
             this.dsList = computedList.filter(sd => sd.finalResult1['result'] === 'DS');
-            this.dsList.sort((a, b) => b.finalResult1['value'] - a.finalResult1['value']);
-            count = 0;
-            for (const xx of this.dsList) {
-                count++;
-                xx.finalResultRank = count;
-            }
-            // updateList.push(...dsList);
-
-            // const acceptExceedQuota = (dsList.length > quoata && msList.length > quoata && sdList.length > quoata) ? true : false;
-            // if (dsList.length > quoata && !acceptExceedQuota) {
-            //
-            // }
-
-            this.loadInitialCompletedList();
+            this.applyRank();
+            this.applyQuoata(1);
+            this.applyRank();
+            this.applyQuoata(2);
+            this.saveFinal();
         } else {
             this.showMessage('Input interview result in all profiles.');
         }
     }
 
+    applyRank() {
+        let count = 0;
+        this.sdList.sort((a, b) => b.finalResult1['value'] - a.finalResult1['value']);
+        count = 0;
+        for (const xx of this.sdList) {
+            count++;
+            xx.finalResultRank = count;
+        }
 
+        this.msList.sort((a, b) => b.finalResult1['value'] - a.finalResult1['value']);
+        count = 0;
+        for (const xx of this.msList) {
+            count++;
+            xx.finalResultRank = count;
+        }
+
+        this.dsList.sort((a, b) => b.finalResult1['value'] - a.finalResult1['value']);
+        count = 0;
+        for (const xx of this.dsList) {
+            count++;
+            xx.finalResultRank = count;
+        }
+    }
+
+    applyQuoata(level) {
+        const acceptExceedQuota = (this.dsList.length >= this.quoata && this.msList.length >= this.quoata && this.sdList.length >= this.quoata) ? true : false;
+        const quoataMs = [];
+        const quoataDs = [];
+        const quoataSd = [];
+
+        let countMs = this.msList.length;
+        let countDs = this.dsList.length;
+        let countSd = this.sdList.length;
+
+        if (!acceptExceedQuota) {
+            if (this.dsList.length > this.quoata) {
+                const cutoff = this.dsList.splice(this.quoata);
+                this.dsList = this.dsList.splice(0, this.quoata);
+                for (const xx of cutoff) {
+                    const final1 = xx.finalResult1;
+                    const final2 = level === 1 ? xx.finalResult2 : xx.finalResult3;
+                    const value = final2['result'];
+                    xx.finalResult1 = final2;
+                    if (level === 1) {
+                        xx.finalResult2 = final1;
+                    } else {
+                        xx.finalResult3 = final1;
+                    }
+
+                    if (value === 'MS' && countMs < this.quoata) {
+                        quoataMs.push(xx);
+                        countMs++;
+                    } else if (value === 'SD' && countSd < this.quoata) {
+                        quoataSd.push(xx);
+                        countSd++
+                    } else {
+                        xx.finalResult1 = final1;
+                        if (level === 1) {
+                            xx.finalResult2 = final2;
+                        } else {
+                            xx.finalResult3 = final2;
+                        }
+                        quoataDs.push(xx);
+                    }
+                }
+            }
+
+            if (this.msList.length > this.quoata) {
+                const cutoff = this.msList.splice(this.quoata);
+                this.msList = this.msList.splice(0, this.quoata);
+                for (const xx of cutoff) {
+                    const final1 = xx.finalResult1;
+                    const final2 = level === 1 ? xx.finalResult2 : xx.finalResult3;
+                    const value = final2['result'];
+                    xx.finalResult1 = final2;
+                    if (level === 1) {
+                        xx.finalResult2 = final1;
+                    } else {
+                        xx.finalResult3 = final1;
+                    }
+
+                    if (value === 'SD' && countSd < this.quoata) {
+                        quoataSd.push(xx);
+                        countSd++;
+                    } else if (value === 'DS' && countDs < this.quoata) {
+                        quoataDs.push(xx);
+                        countDs++;
+                    } else {
+                        xx.finalResult1 = final1;
+                        if (level === 1) {
+                            xx.finalResult2 = final2;
+                        } else {
+                            xx.finalResult3 = final2;
+                        }
+                        quoataMs.push(xx);
+                    }
+                }
+            }
+
+            if (this.sdList.length > this.quoata) {
+                const cutoff = this.sdList.splice(this.quoata);
+                this.sdList = this.sdList.splice(0, this.quoata);
+                for (const xx of cutoff) {
+                    const final1 = xx.finalResult1;
+                    const final2 = level === 1 ? xx.finalResult2 : xx.finalResult3;
+                    const value = final2['result'];
+                    xx.finalResult1 = final2;
+                    if (level === 1) {
+                        xx.finalResult2 = final1;
+                    } else {
+                        xx.finalResult3 = final1;
+                    }
+
+                    if (value === 'MS' && countMs < this.quoata) {
+                        quoataMs.push(xx);
+                        countMs++;
+                    } else if (value === 'DS' && countDs < this.quoata) {
+                        quoataDs.push(xx);
+                        countDs++;
+                    } else {
+                        xx.finalResult1 = final1;
+                        if (level === 1) {
+                            xx.finalResult2 = final2;
+                        } else {
+                            xx.finalResult3 = final2;
+                        }
+                        quoataSd.push(xx);
+                    }
+                }
+            }
+
+            this.sdList.push(...quoataSd);
+            this.msList.push(...quoataMs);
+            this.dsList.push(...quoataDs);
+        }
+    }
 
     saveFinal() {
-        // x.status = 'Final Completed';
-        // x.finalResult = 'Distributed Systems';
-        // const datePipe = new DatePipe('en-US');
-        // x.finalDate = datePipe.transform(Date.now(), 'dd/MM/yyyy');
-        // this.db.updateProfile(x).subscribe(
-        //     data => {
-        //         count--;
-        //         if (count === 0) {
-        //             this.showMessage('Completed final profiling.');
-        //         }
-        //     },
-        //     error => {
-        //         this.showError();
-        //         return Observable.throw(error);
-        //     }
-        // );
+        const finalList = [];
+        finalList.push(...this.sdList);
+        finalList.push(...this.dsList);
+        finalList.push(...this.msList);
+        let count = finalList.length;
+
+        for (const x of finalList) {
+            x.status = 'Final Completed';
+            const datePipe = new DatePipe('en-US');
+            x.finalDate = datePipe.transform(Date.now(), 'dd/MM/yyyy');
+            x.finalResult1 = JSON.stringify(x.finalResult1);
+            x.finalResult2 = JSON.stringify(x.finalResult2);
+            x.finalResult3 = JSON.stringify(x.finalResult3);
+            this.db.updateProfile(x).subscribe(
+                data => {
+                    count--;
+                    if (count === 0) {
+                        this.showMessage('Completed final profiling.');
+                        this.loadInitialCompletedList();
+                    }
+                },
+                error => {
+                    this.showError();
+                    this.loadInitialCompletedList();
+                    return Observable.throw(error);
+                }
+            );
+        }
     }
 
     computeFinal(list) {
@@ -277,22 +417,34 @@ export class ProfileListComponent extends XPageEditComponent {
     }
 
     initialProfileResult(value) {
-        this.initialProfileModel = value;
-        const result1 = JSON.parse(value.initialResult1)['result'];
-        const result2 = JSON.parse(value.initialResult2)['result'];
-        const result3 = JSON.parse(value.initialResult3)['result'];
+        this.initial = true;
+        this.profileResult(value);
+    }
 
-        this.initialProfileModel.initialResult1Label = result1 === 'SD' ? 'Software Development' :
+    finalProfileResult(value) {
+        this.initial = false;
+        this.profileResult(value);
+    }
+
+    profileResult(value) {
+        const result1 = JSON.parse(this.initial ? value.initialResult1 : value.finalResult1)['result'];
+        const result2 = JSON.parse(this.initial ? value.initialResult2 : value.finalResult2)['result'];
+        const result3 = JSON.parse(this.initial ? value.initialResult3 : value.finalResult3)['result'];
+        const rank = this.initial ? value.initialResultRank : value.finalResultRank;
+
+        this.profileModel = value;
+        this.profileModel.result1Label = result1 === 'SD' ? 'Software Development' :
             (result1 === 'MS' ? 'Multimedia Studies' : 'Distributed Systems');
-        this.initialProfileModel.initialResult2Label = result2 === 'SD' ? 'Software Development' :
+        this.profileModel.result2Label = result2 === 'SD' ? 'Software Development' :
             (result2 === 'MS' ? 'Multimedia Studies' : 'Distributed Systems');
-        this.initialProfileModel.initialResult3Label = result3 === 'SD' ? 'Software Development' :
+        this.profileModel.result3Label = result3 === 'SD' ? 'Software Development' :
             (result3 === 'MS' ? 'Multimedia Studies' : 'Distributed Systems');
-        this.modalService.open(this.initialProfileTemplate);
+        this.profileModel.resultRankLabel = rank;
+        this.modalService.open(this.profileTemplate);
     }
 
     emailResult(value) {
-        this.db.emailProfile(value.studentId).subscribe(
+        this.db.emailProfile(value.studentId, this.letterSign).subscribe(
             data => {
                 this.showMessage('Email sent!');
             },

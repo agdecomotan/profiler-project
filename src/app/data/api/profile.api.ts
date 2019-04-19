@@ -25,8 +25,8 @@ export class ProfileApi extends RestApi {
         return this.get<Profile>(this.baseUrl + 'get.php?id=' + id);
     }
 
-    public emailProfile(id: string): Observable<Profile> {
-        return this.get<Profile>(this.baseUrl + 'email.php?id=' + id);
+    public emailProfile(id: string, sign: string): Observable<Profile> {
+        return this.get<Profile>(this.baseUrl + 'email.php?id=' + id + '&sign=' + sign);
     }
 
     public getProfileByStatus(status: string): Observable<Profile[]> {

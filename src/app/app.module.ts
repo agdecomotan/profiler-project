@@ -39,6 +39,7 @@ import {GradeApi} from './data/api/grade.api';
 import {ProfileApi} from './data/api/profile.api';
 import { LoginComponent } from './pages/login/login.component';
 import {AuthGuard} from './pages/login/auth-guard';
+import {SettingApi} from './data/api/setting.api';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import {AuthGuard} from './pages/login/auth-guard';
       CourseApi,
       GradeApi,
       ProfileApi,
+      SettingApi,
       AuthGuard
   ],
   bootstrap: [AppComponent]

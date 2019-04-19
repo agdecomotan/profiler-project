@@ -32,11 +32,11 @@ export class CourseTrackListComponent {
 
     tabChange($event: NgbTabChangeEvent) {
         if ($event.nextId === 'sd') {
-            this.currentTrack = 'Software Development';
+            this.currentTrack = 'SD';
         } else if ($event.nextId === 'ds') {
-            this.currentTrack = 'Distributed Systems';
+            this.currentTrack = 'DS';
         } else if ($event.nextId === 'ms') {
-            this.currentTrack = 'Multimedia Studies';
+            this.currentTrack = 'MS';
         }
         this.currentTab = $event.nextId;
         this.loadList();

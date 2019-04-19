@@ -13,7 +13,13 @@
   background: #ffffff;
 }
 
-.nav-item{
+.nav-item, .navbar-brand{
   cursor: pointer;
 }
+
+.navbar-brand{
+  cursor: context-menu;
+}
+
+
 

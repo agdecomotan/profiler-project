@@ -32,6 +32,17 @@
                 <input type="text" class="form-control" [(ngModel)]="model.msExam" required
                        #name="ngModel">
             </div>
+
+            <br>
+
+            <div class="result-div">
+                Student Choice
+                <select  [(ngModel)]='model.studentChoice' class="form-control">
+                    <option value="Software Development">Software Development</option>
+                    <option value="Distributed Systems">Distributed Systems</option>
+                    <option value="Multimedia Studies">Multimedia Studies</option>
+                </select>
+            </div>
         </div>
     </div>
 </ng-template>
