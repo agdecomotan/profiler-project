@@ -13,10 +13,6 @@ import {XPageEditComponent} from '../../../framework/page/x-page-edit.component'
 })
 
 export class StudentListComponent extends XPageEditComponent implements OnInit {
-    rowValue = [
-        {studentNumber: 'studentNumber', firstName: 'firstName', lastName: 'lastName', id: 2}
-    ];
-
     rows: Observable<any>;
     columns = [];
     loadingIndicator = true;

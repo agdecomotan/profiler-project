@@ -113,7 +113,6 @@ export class ProfileListComponent extends XPageEditComponent {
     }
 
     performInitialProfile(list) {
-        // get result
         for (const x of list) {
             let sdResult = 0;
             let dsResult = 0;
