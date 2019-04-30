@@ -17,6 +17,8 @@ import {GradeApi} from '../../../data/api/grade.api';
 export class StudentEditComponent extends XPageEditComponent {
     columns = [
         {prop: 'title', name: 'Course'},
+        {prop: 'year', name: 'Year'},
+        {prop: 'term', name: 'Term'},
         {prop: 'value', name: 'Grade'}
     ];
 

@@ -105,6 +105,34 @@
                                 [rowHeight]="'auto'"
                                 [headerHeight]="40"
                                 [footerHeight]="40">
+                            <ngx-datatable-column>
+                                <ng-template let-column="column" ngx-datatable-header-template>
+                                    Year - Term
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.year}} - {{row.term}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column>
+                                <ng-template let-column="column" ngx-datatable-header-template>
+                                    Course Title
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.title}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column align="center">
+                                <ng-template let-column="column" ngx-datatable-header-template>
+                                    <div class="center-header">
+                                        Grade
+                                    </div>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <div class="center-header">
+                                        {{row.value}}
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
                         </ngx-datatable>
                     </div>
                 </div>
@@ -121,3 +149,4 @@
         <button type="button" class="btn btn-light" (click)="c('Close click')">OK</button>
     </div>
 </ng-template>
+

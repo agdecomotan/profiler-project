@@ -118,14 +118,6 @@ export class ProfileListComponent extends XPageEditComponent {
             let dsResult = 0;
             let msResult = 0;
 
-            let sdGrade = 0;
-            let dsGrade = 0;
-            let msGrade = 0;
-
-            let sdExam = 0;
-            let dsExam = 0;
-            let msExam = 0;
-
             const getSDGrade = x.grades.filter(c => c.courseSpecialization === 'SD');
             const getDSGrade = x.grades.filter(c => c.courseSpecialization === 'DS');
             const getMSGrade = x.grades.filter(c => c.courseSpecialization === 'MS');
@@ -134,26 +126,48 @@ export class ProfileListComponent extends XPageEditComponent {
             getDSGrade.forEach(f => dsResult += (Number(f.value)));
             getMSGrade.forEach(f => msResult += (Number(f.value)));
 
-            sdGrade = sdResult > 0 ? (sdResult / getSDGrade.length) * .5 : 0;
-            dsGrade = dsResult > 0 ? (dsResult / getDSGrade.length) * .5 : 0;
-            msGrade = msResult > 0 ? (msResult / getMSGrade.length) * .5 : 0;
+            const sdGrade = sdResult > 0 ? (sdResult / getSDGrade.length) * .5 : 0;
+            const dsGrade = dsResult > 0 ? (dsResult / getDSGrade.length) * .5 : 0;
+            const msGrade = msResult > 0 ? (msResult / getMSGrade.length) * .5 : 0;
 
-            sdExam = ((Number(x.sdExam) / 30) * 100) * .5;
-            dsExam = ((Number(x.dsExam) / 30) * 100) * .5;
-            msExam = ((Number(x.msExam) / 30) * 100) * .5;
+            const sdExam = ((Number(x.sdExam) / 30) * 100) * .5;
+            const dsExam = ((Number(x.dsExam) / 30) * 100) * .5;
+            const msExam = ((Number(x.msExam) / 30) * 100) * .5;
 
-            sdResult = sdGrade + sdExam;
-            dsResult = dsGrade + dsExam;
-            msResult = msGrade + msExam;
+            const sdFinalResult = (sdGrade + sdExam).toFixed(2);
+            const dsFinalResult = (dsGrade + dsExam).toFixed(2);
+            const msFinalResult = (msGrade + msExam).toFixed(2);
 
-            const result = [{'result': 'SD', 'value': sdResult},
-                            {'result': 'DS', 'value': dsResult},
-                            {'result': 'MS', 'value': msResult}];
-            result.sort((a, b) => b.value - a.value);
+            const result = [
+                {'result': 'DS', 'value': dsFinalResult},
+                {'result': 'MS', 'value': msFinalResult},
+                {'result': 'SD', 'value': sdFinalResult}];
+            result.sort((a, b) => Number(b.value) - Number(a.value));
 
-            x.initialResult1 = result[0];
-            x.initialResult2 = result[1];
-            x.initialResult3 = result[2];
+            let finalResult1 = result[0];
+            let finalResult2 = result[1];
+            let finalResult3 = result[2];
+            const choice = x.studentChoice.substr(0, 1);
+            if (finalResult1.value === finalResult2.value) {
+                if (finalResult2.result.startsWith(choice)) {
+                    finalResult1 = result[1];
+                    finalResult2 = result[0];
+                }
+            }
+
+            if (finalResult2.value === finalResult3.value) {
+                if (finalResult3.result.startsWith(choice)) {
+                    const fr2 = finalResult2;
+                    const fr3 = finalResult3;
+
+                    finalResult2 = fr3;
+                    finalResult3 = fr2;
+                }
+            }
+
+            x.initialResult1 = finalResult1;
+            x.initialResult2 = finalResult2;
+            x.initialResult3 = finalResult3;
         }
 
         const updateList = [];
@@ -416,14 +430,44 @@ export class ProfileListComponent extends XPageEditComponent {
             const result2 = JSON.parse(x.initialResult2);
             const result3 = JSON.parse(x.initialResult3);
 
-            const sdResult = this.getResultForTrack('SD', result1, result2, result3) + x.sdInterview;
-            const msResult = this.getResultForTrack('MS', result1, result2, result3) + x.msInterview;
-            const dsResult = this.getResultForTrack('DS', result1, result2, result3) + x.dsInterview;
+            const sdInitialResult = this.getResultForTrack('SD', result1, result2, result3) * .8;
+            const msInitialResult = this.getResultForTrack('MS', result1, result2, result3) * .8;
+            const dsInitialResult = this.getResultForTrack('DS', result1, result2, result3) * .8;
 
-            const result = [{'result': 'SD', 'value': sdResult},
+            const sdInterviewResult = ((x.sdInterview / 10) * 100) * .2;
+            const msInterviewResult = ((x.msInterview / 10) * 100) * .2;
+            const dsInterviewResult = ((x.dsInterview / 10) * 100) * .2;
+
+            const sdResult = (sdInitialResult + sdInterviewResult).toFixed(2);
+            const msResult = (msInitialResult + msInterviewResult).toFixed(2);
+            const dsResult = (dsInitialResult + dsInterviewResult).toFixed(2);
+
+            const result = [
                 {'result': 'DS', 'value': dsResult},
-                {'result': 'MS', 'value': msResult}];
-            result.sort((a, b) => b.value - a.value);
+                {'result': 'MS', 'value': msResult},
+                {'result': 'SD', 'value': sdResult}];
+            result.sort((a, b) => Number(b.value) - Number(a.value));
+
+            let finalResult1 = result[0];
+            let finalResult2 = result[1];
+            let finalResult3 = result[2];
+            const choice = x.studentChoice.substr(0, 1);
+            if (finalResult1.value === finalResult2.value) {
+                if (finalResult2.result.startsWith(choice)) {
+                    finalResult1 = result[1];
+                    finalResult2 = result[0];
+                }
+            }
+
+            if (finalResult2.value === finalResult3.value) {
+                if (finalResult3.result.startsWith(choice)) {
+                    const fr2 = finalResult2;
+                    const fr3 = finalResult3;
+
+                    finalResult2 = fr3;
+                    finalResult3 = fr2;
+                }
+            }
 
             x.finalResult1 = result[0];
             x.finalResult2 = result[1];
