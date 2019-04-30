@@ -117,13 +117,35 @@ export class ProfileListComponent extends XPageEditComponent {
             let sdResult = 0;
             let dsResult = 0;
             let msResult = 0;
-            const getSDGrade = x.grades.filter(c => c.courseSpecialization === 'SD').forEach(f => sdResult += (5 - Number(f.value)));
-            const getDSGrade = x.grades.filter(c => c.courseSpecialization === 'DS').forEach(f => dsResult += (5 - Number(f.value)));
-            const getMSGrade = x.grades.filter(c => c.courseSpecialization === 'MS').forEach(f => msResult += (5 - Number(f.value)));
 
-            sdResult += Number(x.sdExam);
-            dsResult += Number(x.dsExam);
-            msResult += Number(x.msExam);
+            let sdGrade = 0;
+            let dsGrade = 0;
+            let msGrade = 0;
+
+            let sdExam = 0;
+            let dsExam = 0;
+            let msExam = 0;
+
+            const getSDGrade = x.grades.filter(c => c.courseSpecialization === 'SD');
+            const getDSGrade = x.grades.filter(c => c.courseSpecialization === 'DS');
+            const getMSGrade = x.grades.filter(c => c.courseSpecialization === 'MS');
+
+            getSDGrade.forEach(f => sdResult += (Number(f.value)));
+            getDSGrade.forEach(f => dsResult += (Number(f.value)));
+            getMSGrade.forEach(f => msResult += (Number(f.value)));
+
+            sdGrade = sdResult > 0 ? (sdResult / getSDGrade.length) * .5 : 0;
+            dsGrade = dsResult > 0 ? (dsResult / getDSGrade.length) * .5 : 0;
+            msGrade = msResult > 0 ? (msResult / getMSGrade.length) * .5 : 0;
+
+            sdExam = ((Number(x.sdExam) / 30) * 100) * .5;
+            dsExam = ((Number(x.dsExam) / 30) * 100) * .5;
+            msExam = ((Number(x.msExam) / 30) * 100) * .5;
+
+            sdResult = sdGrade + sdExam;
+            dsResult = dsGrade + dsExam;
+            msResult = msGrade + msExam;
+
             const result = [{'result': 'SD', 'value': sdResult},
                             {'result': 'DS', 'value': dsResult},
                             {'result': 'MS', 'value': msResult}];
@@ -426,18 +448,24 @@ export class ProfileListComponent extends XPageEditComponent {
     }
 
     profileResult(value) {
-        const result1 = JSON.parse(this.initial ? value.initialResult1 : value.finalResult1)['result'];
-        const result2 = JSON.parse(this.initial ? value.initialResult2 : value.finalResult2)['result'];
-        const result3 = JSON.parse(this.initial ? value.initialResult3 : value.finalResult3)['result'];
+        const result1 = JSON.parse(this.initial ? value.initialResult1 : value.finalResult1);
+        const result2 = JSON.parse(this.initial ? value.initialResult2 : value.finalResult2);
+        const result3 = JSON.parse(this.initial ? value.initialResult3 : value.finalResult3);
         const rank = this.initial ? value.initialResultRank : value.finalResultRank;
 
         this.profileModel = value;
-        this.profileModel.result1Label = result1 === 'SD' ? 'Software Development' :
-            (result1 === 'MS' ? 'Multimedia Studies' : 'Distributed Systems');
-        this.profileModel.result2Label = result2 === 'SD' ? 'Software Development' :
-            (result2 === 'MS' ? 'Multimedia Studies' : 'Distributed Systems');
-        this.profileModel.result3Label = result3 === 'SD' ? 'Software Development' :
-            (result3 === 'MS' ? 'Multimedia Studies' : 'Distributed Systems');
+        this.profileModel.result1Label = result1['result'] === 'SD' ? 'Software Development' :
+            (result1['result'] === 'MS' ? 'Multimedia Studies' : 'Distributed Systems');
+        this.profileModel.result1Label = this.profileModel.result1Label + ' (' + result1['value'] + ')';
+
+        this.profileModel.result2Label = result2['result'] === 'SD' ? 'Software Development' :
+            (result2['result'] === 'MS' ? 'Multimedia Studies' : 'Distributed Systems');
+        this.profileModel.result2Label = this.profileModel.result2Label + ' (' + result2['value'] + ')';
+
+        this.profileModel.result3Label = result3['result'] === 'SD' ? 'Software Development' :
+            (result3['result'] === 'MS' ? 'Multimedia Studies' : 'Distributed Systems');
+        this.profileModel.result3Label = this.profileModel.result3Label + ' (' + result3['value'] + ')';
+
         this.profileModel.resultRankLabel = rank;
 
         this.profileModel.accepted = this.profileModel.accepted !== undefined ? this.profileModel.accepted : 'No';

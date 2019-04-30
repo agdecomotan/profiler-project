@@ -25,6 +25,17 @@ export class StudentEditComponent extends XPageEditComponent {
     rows: Observable<any>;
     courseList = [];
     gradeList = [];
+    gradeValue = [
+        {grade: 1, value: 100},
+        {grade: 1.25, value: 96},
+        {grade: 1.5, value: 92},
+        {grade: 1.75, value: 88},
+        {grade: 2, value: 86},
+        {grade: 2.25, value: 84},
+        {grade: 2.5, value: 82},
+        {grade: 2.75, value: 79},
+        {grade: 3, value: 76}
+    ];
 
     constructor(private db: StudentApi,
                 private dbCourse: CourseApi,
@@ -98,7 +109,9 @@ export class StudentEditComponent extends XPageEditComponent {
         const newGradeList = this.gradeList.filter(x => x.id === 0);
         let count = newGradeList.length;
         for (const x of newGradeList) {
+            const gradeValue = this.gradeValue.filter(gv => gv.grade.toString() === x.value.toString())[0];
             x.studentId = this.model.id;
+            x.value = gradeValue.value;
             this.dbGrade.addGrade(x).subscribe(
                 data => {
                     count--;
@@ -113,10 +126,6 @@ export class StudentEditComponent extends XPageEditComponent {
                 }
             );
         }
-    }
-
-    getGrade() {
-
     }
 
     addGrade() {
@@ -153,6 +162,12 @@ export class StudentEditComponent extends XPageEditComponent {
     }
 
     loadGradeList() {
-        this.dbGrade.getGrade(this.editId).subscribe(data => this.gradeList = data);
+        this.dbGrade.getGrade(this.editId).subscribe(data => {
+            for (const d of data) {
+                const gradeValue = this.gradeValue.filter(x => x.value.toString() === d.value)[0];
+                d.value = gradeValue.grade.toString();
+                this.gradeList.push(d);
+            }
+        });
     }
 }

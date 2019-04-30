@@ -19,17 +19,17 @@
             <label>Exam Result</label>
             <div class="result-div">
                 Software Development
-                <input type="text" class="form-control" [(ngModel)]="model.sdExam" required
+                <input type="number" class="form-control" [(ngModel)]="model.sdExam" min="0" max="30" required
                        #name="ngModel">
             </div>
             <div class="result-div">
                 Distributed Systems
-                <input type="text" class="form-control" [(ngModel)]="model.dsExam" required
+                <input type="number" class="form-control" [(ngModel)]="model.dsExam" min="0" max="30" required
                        #name="ngModel">
             </div>
             <div class="result-div">
                 Multimedia Studies
-                <input type="text" class="form-control" [(ngModel)]="model.msExam" required
+                <input type="number" class="form-control" [(ngModel)]="model.msExam" min="0" max="30" required
                        #name="ngModel">
             </div>
 
