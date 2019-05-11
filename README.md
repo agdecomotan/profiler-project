@@ -12,7 +12,5 @@ This is the frontend source code for Track Profiler.
 Access the application in:
 
 https://imjustpureblood.ml/track-profiler/
-
 Username: ggenterola
-
 Password: adminpassword
