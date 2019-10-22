@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://imjustpureblood.ml/profiler-api/'
+    apiUrl: 'https://track-profiler-api.herokuapp.com/'
 };
