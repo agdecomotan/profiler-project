@@ -1,8 +1,5 @@
 import {Component} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {BaseService} from '../../../data/service/base-service';
 import {ProfileApi} from '../../../data/api/profile.api';
-import {DatePipe} from '@angular/common';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

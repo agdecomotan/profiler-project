@@ -8,19 +8,15 @@ import {HttpClientModule} from '@angular/common/http';
 // Library
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {NvD3Module} from 'ng2-nvd3';
-import { NgSelectModule } from '@ng-select/ng-select';
+import {NgSelectModule} from '@ng-select/ng-select';
 import 'd3';
 import 'nvd3'
-
 // Framework
 import {XNavComponent} from './framework/nav/x-nav.component';
 import {XFooterComponent} from './framework/footer/x-footer.component';
 import {XPageComponent} from './framework/page/x-page.component';
-
 // DB
-import {BaseService} from './data/service/base-service';
 import {StudentApi} from './data/api/student.api';
-
 // Pages
 import {AppComponent} from './app.component';
 import {MainComponent} from './pages/main.component';
@@ -37,7 +33,7 @@ import {UserApi} from './data/api/user.api';
 import {CourseApi} from './data/api/course.api';
 import {GradeApi} from './data/api/grade.api';
 import {ProfileApi} from './data/api/profile.api';
-import { LoginComponent } from './pages/login/login.component';
+import {LoginComponent} from './pages/login/login.component';
 import {AuthGuard} from './pages/login/auth-guard';
 import {SettingApi} from './data/api/setting.api';
 
@@ -72,7 +68,6 @@ import {SettingApi} from './data/api/setting.api';
       NgSelectModule
   ],
   providers: [
-      BaseService,
       StudentApi,
       UserApi,
       CourseApi,
