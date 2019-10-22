@@ -12,7 +12,3 @@ This is the frontend source code for Track Profiler.
 Access the application in:
 
 https://track-profiler.netlify.com/
-<br>
-Username: ggenterola
-<br>
-Password: adminpassword
