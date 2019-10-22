@@ -12,7 +12,7 @@ export class BaseService {
         })
     };
 
-    apiURL = 'https://imjustpureblood.ml/profiler-api/';
+    apiURL = 'https://track-profiler-api.herokuapp.com/';
 
     constructor(private http: HttpClient, private router: Router) {}
 
