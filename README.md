@@ -10,5 +10,7 @@ University of the Philippines Open University
 This is the frontend source code for Track Profiler.
 
 Access the application in:
-
 https://track-profiler.netlify.com/
+
+Please read manual for functions:
+https://github.com/agdecomotan/profiler-project/blob/master/Track%20Profiler%20User%20Manual.pdf
